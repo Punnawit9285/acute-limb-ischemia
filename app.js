@@ -7,6 +7,8 @@
   /* ?pdf=1 is the static hand-in version used by tools/build-pdf.js: light theme, every answer open, no controls. */
   var PDF = /[?&]pdf=1/.test(location.search);
   var BASE = window.ALI_BASE;
+  /* Public copy of the hand-in PDF, built with no presenter details. */
+  var DOWNLOAD = '<a class="btn dlbtn" href="acute-limb-ischemia-case4.pdf" download>&#8595; Download PDF</a>';
   var LET = 'ABCDEFGH';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -111,7 +113,7 @@
     var cap = img.closest('.scan') ? $('figcaption', img.closest('.scan')) : null;
     var o = document.createElement('div');
     o.className = 'overlay';
-    o.innerHTML = '<div class="ovbox"><div class="ovpaper"><img src="' + img.getAttribute('src') + '" alt=""></div>' + (cap ? '<p class="ovcap">' + cap.innerHTML + '</p>' : '') + '</div>';
+    o.innerHTML = '<div class="ovbox"><div class="ovpaper"><img src="' + (img.getAttribute('data-full') || img.getAttribute('src')) + '" alt=""></div>' + (cap ? '<p class="ovcap">' + cap.innerHTML + '</p>' : '') + '</div>';
     o.addEventListener('click', function () { o.remove(); });
     document.body.appendChild(o);
   }
@@ -127,7 +129,7 @@
       '<div class="kick">CVS I &#183; Case 4 &#183; Case presentation</div>' +
       '<h1>Acute limb ischemia</h1>' +
       '<p class="lede">อ่านเคส หา symptoms and signs แล้วต่อ flowchart กลไกด้วยกันทีละกล่อง</p>' + presenterHtml() +
-      '<a class="livelink" href="' + BASE + '" target="_blank" rel="noopener"><span class="lt">Interactive website: เปิดแล้วกดตอบได้เอง เฉลยขึ้นทันที</span><span class="lu">' + BASE.replace('https://', '').replace('.io/', '.io/<wbr>') + ' &#8599;</span></a>' +
+      '<a class="livelink" href="' + BASE + '" target="_blank" rel="noopener"><span class="lt">Interactive website: เปิดแล้วกดตอบได้เอง เฉลยขึ้นทันที</span><span class="lu">' + BASE.replace('https://', '').replace('.io/', '.io/<wbr>') + ' &#8599;</span></a>' + DOWNLOAD +
       '<ol class="howto"><li>สแกน QR ของหน้าไหนก็ได้ มือถือจะเปิดหน้านั้นทันที</li>' +
       '<li>แตะคำตอบ <b>เฉลยขึ้นทันที</b></li></ol>' +
       '<p class="keys"><kbd>Space</kbd> reveal next &#183; <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> move &#183; <kbd>A</kbd>&#8211;<kbd>E</kbd> choose &#183; <kbd>Q</kbd> big QR &#183; <kbd>R</kbd> reset page &#183; <kbd>F</kbd> full screen</p>' +
@@ -186,7 +188,7 @@
   }
   function renderEnd(s) {
     return '<article class="card">' + eyebrow(s) + '<h2>' + s.title + '</h2><div class="cbody">' + cloze(s.html) +
-      '<div class="score"><span id="scoreTxt"></span><button type="button" class="btn primary" id="morePractice">More practice (' + (S.length - FIRST_BONUS) + ')</button><button type="button" class="btn" id="startOver">Start over</button></div></div></article>';
+      '<div class="score"><span id="scoreTxt"></span><button type="button" class="btn primary" id="morePractice">More practice (' + (S.length - FIRST_BONUS) + ')</button>' + DOWNLOAD + '<button type="button" class="btn" id="startOver">Start over</button></div></div></article>';
   }
   var R = { title: renderTitle, frag: renderFrag, poll: renderPoll, tap: renderTap, concept: renderConcept, flowpoll: renderFlowPoll, flowtap: renderFlowPoll, trace: renderTrace, recall: renderRecall, end: renderEnd };
 
@@ -458,7 +460,7 @@
   };
 
   /* Fetch every figure up front: reveals stay instant, and the deck survives Wi-Fi dropping after the first load. */
-  ['cxr-ac81.jpg', 'jvp-normal.png', 'jvp-ac80.png', 'ecg-fig10-1.png', 'af-doglab.png', 'fast-ap-labslide.png'].forEach(function (f) { new Image().src = 'img/' + f; });
+  ['cxr-ac81.jpg', 'jvp-normal.png', 'jvp-ac80.png', 'ecg-fig10-1.png', 'af-doglab.png', 'fast-ap-labslide.png', 'ld1-lecture-crop.png', 'ld1-lecture-slide62.png'].forEach(function (f) { new Image().src = 'img/' + f; });
 
   var want = location.hash ? location.hash.slice(1) : 'start';
   render(byId[want] !== undefined ? want : 'start');

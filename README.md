@@ -45,6 +45,8 @@ CHROME="/path/to/Google Chrome" npm run pdf -- "output.pdf"
 
 For the PDF cover, set `PRESENTER_NAME`, `PRESENTER_ID` and `PRESENTER_GROUP` when building. This repo is public, so keep them out of `config.js`.
 
+The **Download PDF** button serves `acute-limb-ischemia-case4.pdf` from this repo. Build that copy with those three unset, so its cover has blank lines. Rebuild and commit it whenever the slides change.
+
 The PDF is the real slides with every answer open (`index.html?pdf=1`). The trace slide lists all six paths there, since a PDF cannot be clicked. The build fails if a slide is cut off or the file is over 10 MB.
 
 ## Live sync and vote counts (off)
@@ -55,6 +57,6 @@ Tested only against a local broker, not a hosted relay.
 
 ## Figures
 
-Real figures from the course material, credited in each caption: chest film (AC81, labels from AC80), JVP (AC80), ECG Fig. 10-1 (ECG lab direction), fast action potential (heart contraction lab slide), AF tracing (Disturbance of CVS II lab). The one exception is the labelled normal JVP, which the course material does not have: it comes from Stanford Medicine 25 via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:JVP_waveform.png), public domain.
+Real figures from the course material, credited in each caption: chest film (AC81, labels from AC80), JVP (AC80), ECG Fig. 10-1 (ECG lab direction), fast action potential (heart contraction lab slide), AF tracing (Disturbance of CVS II lab), LD1 (Cardiac Biochemistry lecture, slide 62; clicking the crop opens the whole slide). The one exception is the labelled normal JVP, which the course material does not have: it comes from Stanford Medicine 25 via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:JVP_waveform.png), public domain.
 
 The lecture's own symptoms-and-signs and flowchart slides are not reproduced: they were used as the answer key, and the flowchart is rebuilt so the audience can predict each box.

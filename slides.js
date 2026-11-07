@@ -142,9 +142,10 @@ window.ALI = (function () {
       say: 'Blocked artery, less flow. Three of the six come straight from that. The other three need the middle box.' },
 
     { id: 'f3', kind: 'flowpoll', sec: 3, t: 35, tag: 'Past exam in the flowchart', src: 'AC80', known: ['occl', 'flow', 'pulse', 'hypox', 'skin'], reveals: ['atp'],
-      afterChart: '<div class="mini art ldcard onlyrev"><h4>Cardiac muscle: LD1 (H<sub>4</sub>)</h4>' +
-        '<p>LD1 มากที่สุด (60%) K<sub>m</sub> ของ lactate ต่ำ ปกติหัวใจจึงเปลี่ยน lactate &#8594; pyruvate ใช้เป็นเชื้อเพลิง</p>' +
-        '<p>ขาด O<sub>2</sub>: pyruvate และ NADH คั่ง จึงเกิด <b>lactic acid</b> สะสมแทน</p></div>',
+      afterChart: '<div class="mini art ldcard onlyrev">' +
+        '<figure class="scan ldshot"><div class="paperimg"><img src="img/ld1-lecture-crop.png" data-full="img/ld1-lecture-slide62.png" alt="Lecture slide 62: LD-1 prefers the direction from lactate to pyruvate"></div></figure>' +
+        '<p><b>Cardiac muscle</b>: LD1 มากที่สุด (60%) ปกติจึงใช้ lactate เป็นเชื้อเพลิง ขาด O<sub>2</sub>: pyruvate และ NADH คั่ง จึงเกิด <b>lactic acid</b> สะสมแทน</p>' +
+        '<p class="srcline">Cardiac Biochemistry, slide 62<span class="zoomhint"> &#183; แตะรูปเพื่อดูทั้งสไลด์</span></p></div>',
       q: 'A patient experiences chest pain due to cardiac ischemia. What happens in anaerobic respiration of cardiac muscle?',
       o: ['Lactic acid from glycolysis', 'Fatty acid oxidation', 'Pyruvate accumulation in mitochondria', 'Use ketone body as main energy source'], a: 0,
       why: [
