@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tutor &#183; Acute limb ischemia</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" style="grid-template-rows:auto auto minmax(0,1fr) auto">
+  <header class="bar">
+    <div class="brand">
+      <svg viewBox="0 0 38 22" aria-hidden="true"><path d="M1,12 L9,12 L12,4 L16,19 L20,8 L23,12 L37,12" fill="none" stroke="var(--art)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><b>Tutor view</b><small>All answers shown</small></div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+    <div class="ctrls">
+      <button type="button" class="icon" id="themeBtn" aria-label="Switch between light and dark"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8,1.5 A6.5,6.5 0 0 1 8,14.5 Z" fill="currentColor"/></svg></button>
+      <button type="button" class="icon" id="fsBtn" aria-label="Full screen"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5,5.5 V1.5 H5.5 M10.5,1.5 H14.5 V5.5 M14.5,10.5 V14.5 H10.5 M5.5,14.5 H1.5 V10.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button type="button" class="qrthumb" id="qrthumb" aria-label="Enlarge QR code"></button>
+    </div>
+  </header>
+  <div class="saybar"><b>SAY</b><span id="say"></span><label><input type="checkbox" id="follow" checked> Follow student deck</label></div>
+  <div class="shell">
+    <main id="stage"></main>
+    <aside class="rail" id="rail" aria-label="Join on your phone">
+      <div class="scan-t">Scan to join</div>
+      <button type="button" class="qrbtn" id="railqr" aria-label="Enlarge QR code"></button>
+      <div class="here" id="railhere"></div>
+      <div class="livebox" id="livebox" hidden></div>
+    </aside>
+  </div>
+  <footer class="pager">
+    <button type="button" class="btn" id="prev">&#8592; Prev</button>
+    <div class="pos" id="pos" aria-live="polite"></div>
+    <button type="button" class="btn primary" id="reveal" disabled>Reveal</button>
+    <button type="button" class="btn" id="next">Next &#8594;</button>
+    <div class="prog"><i id="progBar"></i></div>
+  </footer>
+</div>
+<script>window.ALI_MODE = 'tutor';</script>
+<script src="config.js"></script>
+<script src="qr-data.js"></script>
+<script src="slides.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

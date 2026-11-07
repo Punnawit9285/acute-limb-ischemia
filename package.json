@@ -1,0 +1,12 @@
+{
+  "name": "acute-limb-ischemia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Click-through case on acute limb ischemia for CVS I peer tutoring. Static site, served by GitHub Pages.",
+  "scripts": {
+    "qr": "node tools/build-qr.js"
+  },
+  "devDependencies": {
+    "qrcode": "^1.5.4"
+  }
+}
