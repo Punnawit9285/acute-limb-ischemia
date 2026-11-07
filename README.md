@@ -35,13 +35,15 @@ Every slide has its own QR code that opens that slide, so a late scan lands on t
 
 ## Editing
 
-All content is in `slides.js`. `{{text}}` makes a click-to-reveal blank. `t` is a slide's time budget in seconds, and `bonus: true` moves a slide to More practice. The presenter's name, ID and group go in `config.js`.
+All content is in `slides.js`. `{{text}}` makes a click-to-reveal blank. `t` is a slide's time budget in seconds, and `bonus: true` moves a slide to More practice.
 
 ```bash
 npm install
 npm run qr                                   # after changing a slide id or the address
 CHROME="/path/to/Google Chrome" npm run pdf -- "output.pdf"
 ```
+
+For the PDF cover, set `PRESENTER_NAME`, `PRESENTER_ID` and `PRESENTER_GROUP` when building. This repo is public, so keep them out of `config.js`.
 
 The PDF is the real slides with every answer open (`index.html?pdf=1`). The trace slide lists all six paths there, since a PDF cannot be clicked. The build fails if a slide is cut off or the file is over 10 MB.
 

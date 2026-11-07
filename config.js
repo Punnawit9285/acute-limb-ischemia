@@ -1,7 +1,8 @@
 /* Public address of the deck. Every QR code is generated from this (see tools/build-qr.js). */
 window.ALI_BASE = 'https://punnawit9285.github.io/acute-limb-ischemia/';
 
-/* Shown on the cover. Left empty, the website shows nothing and the PDF prints blank lines to write on. */
+/* Shown on the website cover, and this repo is public. Left empty, the website shows nothing.
+   The PDF cover takes its details from the environment instead (see README). */
 window.ALI_PRESENTER = { name: '', id: '', group: '' };
 
 /* Live sync and vote counts are OFF: GitHub Pages is static, so they need a realtime relay.

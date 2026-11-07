@@ -32,6 +32,11 @@ const srv = http.createServer((q, r) => {
     await p.emulateMediaType('screen');
     await p.goto(`http://127.0.0.1:${PORT}/index.html?pdf=1#${id}`, { waitUntil: 'networkidle0' });
     await p.evaluate(() => document.fonts.ready);
+    /* The cover details come from the environment so a student ID never lands in this public repo. */
+    await p.evaluate(who => {
+      const blanks = document.querySelectorAll('.presenter b');
+      who.forEach((v, i) => { if (v && blanks[i]) blanks[i].textContent = v; });
+    }, [process.env.PRESENTER_NAME, process.env.PRESENTER_ID, process.env.PRESENTER_GROUP]);
     const over = await p.evaluate(() => { const s = document.getElementById('stage'); return s.scrollHeight - s.clientHeight; });
     if (over > 1) { console.log(`CUT OFF: ${id} overflows by ${over}px`); cut++; }
     const buf = await p.pdf({ width: '1280px', height: '720px', printBackground: true, pageRanges: '1' });
