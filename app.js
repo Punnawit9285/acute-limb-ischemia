@@ -429,6 +429,9 @@
     votes: function () { return sel; }
   };
 
+  /* Fetch every figure up front: reveals stay instant, and the deck survives Wi-Fi dropping after the first load. */
+  ['cxr-ac81.jpg', 'jvp-ac80.png', 'ecg-fig10-1.png', 'af-doglab.png', 'fast-ap-labslide.png'].forEach(function (f) { new Image().src = 'img/' + f; });
+
   var want = location.hash ? location.hash.slice(1) : 'start';
   render(byId[want] !== undefined ? want : 'start');
 })();

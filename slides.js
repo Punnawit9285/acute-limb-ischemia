@@ -50,7 +50,7 @@ window.ALI = (function () {
   ];
 
   function fig(src, cap, source, cls) {
-    return '<figure class="scan ' + (cls || '') + '"><div class="paperimg"><img src="img/' + src + '" alt="' + cap.replace(/<[^>]+>/g, '').replace(/"/g, '') + '" loading="lazy"></div>' +
+    return '<figure class="scan ' + (cls || '') + '"><div class="paperimg"><img src="img/' + src + '" alt="' + cap.replace(/<[^>]+>/g, '').replace(/"/g, '') + '"></div>' +
       '<figcaption>' + cap + ' <span class="src">' + source + '</span></figcaption></figure>';
   }
 
@@ -60,7 +60,7 @@ window.ALI = (function () {
       return '<span class="cxrlab ' + (cls || '') + '" style="left:' + (x0 / 11.62).toFixed(2) + '%;top:' + (y0 / 11.37).toFixed(2) + '%;width:' + ((x1 - x0) / 11.62).toFixed(2) + '%;height:' + ((y1 - y0) / 11.37).toFixed(2) + '%">' + html + '</span>';
     };
     return '<figure class="scan cxr"><div class="cxrwrap">' +
-      '<img src="img/cxr-ac81.jpg" alt="Normal PA chest film with the heart borders traced" loading="lazy">' +
+      '<img src="img/cxr-ac81.jpg" alt="Normal PA chest film with the heart borders traced">' +
       box(800, 27, 1157, 97, 'Left subclavian a.') +
       box(864, 210, 1018, 332, 'Aortic arch') +
       box(894, 372, 1126, 492, 'Pulmonary trunk') +
