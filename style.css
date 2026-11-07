@@ -42,6 +42,12 @@ button { font: inherit; color: inherit; }
 .bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 8px 16px; background: var(--sheet); border-bottom: 1px solid var(--rule); }
 .brand { display: flex; gap: 10px; align-items: center; min-width: 0; }
 .brand svg { flex: none; width: 34px; height: 20px; }
+/* EKG logo: a faint trace with one small pulse travelling along it, then a short rest, like a slow heartbeat. */
+.ekg path { fill: none; stroke: var(--art); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ekg-base { opacity: .28; }
+.ekg-pulse { stroke-dasharray: 24 200; stroke-dashoffset: 24; animation: ekg-beat 2.4s linear infinite; }
+@keyframes ekg-beat { 0% { stroke-dashoffset: 24; } 70%, 100% { stroke-dashoffset: -102; } }
+@media (prefers-reduced-motion: reduce) { .ekg-base { opacity: 1; } .ekg-pulse { display: none; } }
 .brand b { display: block; font: 600 1rem var(--f-display); white-space: nowrap; }
 .brand small { display: block; color: var(--ink2); font: .68rem var(--f-mono); white-space: nowrap; }
 .tabs { display: flex; gap: 6px; overflow-x: auto; min-width: 0; scrollbar-width: none; }
@@ -57,7 +63,8 @@ button { font: inherit; color: inherit; }
 .qrthumb svg { display: block; width: 100%; height: 100%; }
 
 .shell { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail); min-height: 0; }
-#stage { min-width: 0; min-height: 0; overflow-y: auto; padding: 14px 16px; display: grid; grid-template-rows: minmax(100%, auto); }
+#stage { min-width: 0; min-height: 0; overflow-y: auto; padding: 14px 16px; }
+#stage > .card { min-height: 100%; }
 body[data-kind="title"] .shell { grid-template-columns: minmax(0, 1fr); }
 body[data-kind="title"] .rail { display: none; }
 .rail { min-height: 0; overflow: hidden; border-left: 1px solid var(--rule); background: var(--sheet); padding: 14px; display: grid; gap: 8px; align-content: start; justify-items: center; text-align: center; }
@@ -113,13 +120,14 @@ h2 .hl { color: var(--art); }
 
 /* tappable phrases */
 .caseline { background: var(--sheet2); border-left: 4px solid var(--art); border-radius: 0 10px 10px 0; padding: .7em 1em; line-height: 1.85; margin: 0; font-size: 1.04em; }
-.newtxt { background: var(--ven-soft); border-radius: 4px; padding: .1em .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .ph { border: 1.5px dashed var(--ink2); background: var(--sheet); border-radius: 7px; padding: .08em .35em; cursor: pointer; font-size: inherit; line-height: 1.35; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .ph:hover { border-color: var(--ven); }
-.ph.sel { background: var(--ven-soft); border: 1.5px solid var(--ven); }
+.ph.sel { cursor: default; }
+.ph.sel.ok { background: var(--ok-soft); border: 1.5px solid var(--ok); font-weight: 500; }
+.ph.sel:not(.ok) { background: var(--bad-soft); border: 1.5px solid var(--bad); text-decoration: line-through; }
 .rev .ph { cursor: default; opacity: .62; }
 .rev .ph.ok { background: var(--ok-soft); border: 1.5px solid var(--ok); opacity: 1; font-weight: 500; }
-.rev .ph.sel:not(.ok) { background: var(--bad-soft); border: 1.5px solid var(--bad); opacity: 1; text-decoration: line-through; }
+.rev .ph.sel:not(.ok) { opacity: 1; }
 .chips { display: flex; flex-wrap: wrap; gap: .45em; margin: 0; }
 .chips .ph { padding: .4em .7em; }
 .tapscore { font: 600 .92em var(--f-display); margin-bottom: .3em; color: var(--ok); }
@@ -155,18 +163,11 @@ h2 .hl { color: var(--art); }
 .pcol { display: grid; gap: .7em; min-width: 0; align-content: start; }
 .waiting { border: 1.5px dashed var(--rule); border-radius: 12px; padding: 1em; color: var(--ink2); font-size: .92em; text-align: center; }
 .rev .waiting { display: none; }
-.showcard { display: none; margin-top: .6em; width: 100%; }
-.pollcard.hassel:not(.rev) .showcard { display: block; }
 
 /* poll-result bars: only ever filled by the optional live layer */
 .opt .vbar { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--ven-soft); transition: width .3s; z-index: 0; }
 .rev .opt.isans .vbar { background: rgba(19, 116, 74, .18); }
 .opt .pct { position: relative; z-index: 1; font: 600 .84em var(--f-mono); color: var(--ink2); }
-
-/* answer card: hold your phone up */
-.anscard { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; align-content: center; gap: 12px; color: #fff; cursor: pointer; text-align: center; padding: 20px; }
-.anscard b { font: 700 min(60vw, 46vh) / 1 var(--f-display); }
-.anscard span { font-size: 1rem; opacity: .9; }
 
 /* ---------- tables ---------- */
 .tblwrap { overflow-x: auto; min-width: 0; }
@@ -181,6 +182,14 @@ h2 .hl { color: var(--art); }
 .paperimg { background: var(--scanbg); border: 1px solid var(--rule); border-radius: 10px; padding: .35em; isolation: isolate; }
 .scan img { display: block; width: auto; max-width: 100%; height: auto; max-height: 46vh; margin: 0 auto; mix-blend-mode: multiply; cursor: zoom-in; border-radius: 4px; }
 .scan.small img { max-height: 21vh; }
+.scan.jvpn img { height: 25vh; max-height: none; }
+/* JVP slide: normal trace alone while answering, then normal beside the exam figure. */
+.jvpcompare { display: grid; gap: .7em; align-items: start; }
+.onlyrev { display: none; }
+.rev .onlyrev { display: grid; }
+.rev .jvpcompare { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rev .jvpcompare img { width: 100%; height: auto; max-height: 24vh; object-fit: contain; }
+.rev .jvpcompare .src { white-space: normal; }
 .scan figcaption { font-size: .8em; line-height: 1.35; color: var(--ink2); text-wrap: pretty; }
 .cxrwrap { position: relative; container-type: inline-size; width: 100%; max-width: min(100%, 60vh); margin: 0 auto; border-radius: 8px; overflow: hidden; line-height: 0; }
 .cxrwrap img { width: 100%; max-height: none; mix-blend-mode: normal; cursor: zoom-in; border-radius: 0; }
@@ -227,7 +236,7 @@ h2 .hl { color: var(--art); }
 .tr.cur { background: var(--art); color: var(--sheet); border-color: var(--art); }
 .tracenote { min-height: 2.6em; background: var(--sheet2); border-radius: 10px; padding: .5em .85em; font-size: .96em; }
 .tracenote b { color: var(--art); font-family: var(--f-display); }
-.fc.large { font-size: 1em; row-gap: 1.2em; }
+.fc.large { font-size: .95em; row-gap: 1.05em; }
 
 /* ---------- title and end ---------- */
 .title { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2em; align-items: center; }
@@ -259,6 +268,7 @@ kbd { font: .84em var(--f-mono); border: 1px solid var(--rule); border-bottom-wi
 /* ---------- tutor ---------- */
 .saybar { padding: 8px 16px; background: var(--warn-soft); border-bottom: 1px solid var(--rule); font-size: .92rem; display: flex; gap: 12px; align-items: flex-start; }
 .saybar b { font: 600 .74rem var(--f-mono); color: var(--warn); padding-top: .2em; }
+.saybar .tm { font: 600 .8rem var(--f-mono); color: var(--warn); margin-right: 6px; white-space: nowrap; }
 .saybar label { margin-left: auto; white-space: nowrap; font-size: .8rem; color: var(--ink2); display: flex; gap: 5px; align-items: center; }
 
 /* ---------- optional live layer ---------- */
@@ -290,7 +300,6 @@ body.following #prev, body.following #next, body.following #reveal { display: no
   .pollflow > div { display: contents; }
   .pollflow .stem { order: 1; margin: 0; }
   .pollflow .opts, .pollflow .chips { order: 2; }
-  .pollflow .showcard { order: 3; margin: 0; }
   .pollflow .fc { order: 4; }
   .pollflow .explain { order: 5; }
   .pager { position: sticky; bottom: 0; z-index: 8; grid-template-columns: auto minmax(0, 1fr) auto; padding-inline: 10px; }
@@ -302,9 +311,10 @@ body.following #prev, body.following #next, body.following #reveal { display: no
   .bigqr button { width: min(70vw, 300px); }
   .scan img { max-height: 44vh; }
   .scan.small img { max-height: 30vh; }
+  .scan.jvpn img { height: auto; width: 100%; max-height: 32vh; object-fit: contain; }
+  .rev .jvpcompare { grid-template-columns: minmax(0, 1fr); }
   .waiting { display: none; }
   .fc { font-size: .78em; column-gap: .3em; }
   .fc.large { font-size: .82em; }
   .keys { display: none; }
 }
-@media (min-width: 861px) { .showcard { display: none !important; } }

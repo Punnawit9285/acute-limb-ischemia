@@ -96,6 +96,7 @@
   var hostState = null, stateAt = 0, following = true, current = null;
   function startPhone() {
     window.Deck.on('vote', function (d) { pub('vote/' + cid, { id: d.id, v: d.v }); });
+    window.Deck.on('change', paintBars);
     setInterval(hello, 20000);
     setInterval(function () {
       /* presenter gone quiet: fall back to self-paced */

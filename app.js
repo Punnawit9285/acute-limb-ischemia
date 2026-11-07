@@ -6,7 +6,6 @@
   var TUTOR = window.ALI_MODE === 'tutor';
   var BASE = window.ALI_BASE;
   var LET = 'ABCDEFGH';
-  var CARD_COL = ['#c0392b', '#1f4f97', '#b7791f', '#13744a', '#6b3fa0'];
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var LS = {
@@ -14,6 +13,9 @@
     set: function (k, v) { try { localStorage.setItem('ali:' + k, JSON.stringify(v)); } catch (e) { } }
   };
   var byId = {}; S.forEach(function (s, i) { byId[s.id] = i; });
+  /* The talk is everything before the first bonus slide. Next never crosses from one group into the other. */
+  var FIRST_BONUS = S.length;
+  for (var fb = 0; fb < S.length; fb++) { if (S[fb].bonus) { FIRST_BONUS = fb; break; } }
   var rev = LS.get('rev', {}), sel = LS.get('sel', {}), idx = 0;
   var listeners = {};
   function emit(ev, data) { (listeners[ev] || []).forEach(function (f) { f(data); }); }
@@ -119,8 +121,7 @@
       '<h1>Acute limb ischemia</h1>' +
       '<p class="lede">อ่านเคส หา symptoms and signs แล้วต่อ flowchart กลไกด้วยกันทีละกล่อง</p>' +
       '<ol class="howto"><li>สแกน QR ของหน้าไหนก็ได้ มือถือจะเปิดหน้านั้นทันที</li>' +
-      '<li>เลือกคำตอบในมือถือ<b>ก่อน</b>กด Reveal</li>' +
-      '<li>พอถูกถาม กด <b>Show my answer</b> แล้วชูมือถือขึ้น</li></ol>' +
+      '<li>แตะคำตอบ <b>เฉลยขึ้นทันที</b></li></ol>' +
       '<p class="keys"><kbd>Space</kbd> reveal next &#183; <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> move &#183; <kbd>A</kbd>&#8211;<kbd>E</kbd> choose &#183; <kbd>Q</kbd> big QR &#183; <kbd>R</kbd> reset page &#183; <kbd>F</kbd> full screen</p>' +
       '</div><div class="bigqr"><div class="scan-t">Scan to join</div><button type="button" class="bigqrbtn" aria-label="Enlarge QR">' + qrSvg('start') + '</button><div class="url">' + BASE.replace('https://', '') + '</div></div></div></article>';
   }
@@ -130,10 +131,10 @@
       '</div>' + (s.prompt ? '<p class="prompt">' + s.prompt + '</p>' : '') + '</article>';
   }
   function renderPoll(s) {
-    var left = '<div class="stem">' + s.q + '</div>' + optsHtml(s) + '<button type="button" class="btn showcard">Show my answer</button>';
+    var left = '<div class="stem">' + s.q + '</div>' + optsHtml(s);
     var right;
     if (s.figHtml) right = s.figHtml;
-    else right = '<div class="waiting">เลือกคำตอบก่อน แล้วรอเฉลยพร้อมกัน</div>';
+    else right = '<div class="waiting">แตะคำตอบเพื่อดูเฉลย</div>';
     var ex = explainHtml(s);
     return '<article class="card pollcard">' + eyebrow(s) + '<div class="pgrid">' +
       (s.layout === 'fig'
@@ -160,7 +161,7 @@
         return '<button type="button" class="ph' + (c.ok ? ' ok' : '') + '" data-p="' + i + '">' + c.t + '</button>';
       }).join('') + '</div>' + explainHtml(s, 'Answer &#183; ' + ok);
     } else {
-      q = '<div class="stem">' + s.q + '</div>' + optsHtml(s) + '<button type="button" class="btn showcard">Show my answer</button>' + explainHtml(s);
+      q = '<div class="stem">' + s.q + '</div>' + optsHtml(s) + explainHtml(s);
     }
     return '<article class="card pollcard' + (s.kind === 'flowtap' ? ' tapcard' : '') + '">' + eyebrow(s) + '<div class="flowgrid pollflow"><div class="fcwrap">' + flowHtml({ known: s.known, reveals: s.reveals }) + '</div><div class="pcol">' + q + '</div></div></article>';
   }
@@ -175,7 +176,7 @@
   }
   function renderEnd(s) {
     return '<article class="card">' + eyebrow(s) + '<h2>' + s.title + '</h2><div class="cbody">' + cloze(s.html) +
-      '<div class="score"><span id="scoreTxt"></span><button type="button" class="btn" id="startOver">Start over</button></div></div></article>';
+      '<div class="score"><span id="scoreTxt"></span><button type="button" class="btn primary" id="morePractice">More practice (' + (S.length - FIRST_BONUS) + ')</button><button type="button" class="btn" id="startOver">Start over</button></div></div></article>';
   }
   var R = { title: renderTitle, frag: renderFrag, poll: renderPoll, tap: renderTap, concept: renderConcept, flowpoll: renderFlowPoll, flowtap: renderFlowPoll, trace: renderTrace, recall: renderRecall, end: renderEnd };
 
@@ -215,7 +216,6 @@
     /* selection */
     var v = sel[s.id];
     $$('.opt', card).forEach(function (o) { o.classList.toggle('sel', +o.getAttribute('data-v') === v); });
-    card.classList.toggle('hassel', typeof v === 'number');
     if (Array.isArray(v)) $$('.ph', card).forEach(function (p) { p.classList.toggle('sel', v.indexOf(+p.getAttribute('data-p')) >= 0); });
     var ts = $('.tapscore', card);
     if (ts) {
@@ -228,7 +228,7 @@
     if (s.kind === 'end') { var score = scoreOf(); $('#scoreTxt').innerHTML = 'Your score <b>' + score.right + ' / ' + score.total + '</b>' + (score.answered < score.total ? ' <span class="muted">(answered ' + score.answered + ')</span>' : ''); }
 
     if (fresh && window.matchMedia('(max-width: 860px), (max-aspect-ratio: 1/1)').matches) {
-      var target = revealed && fresh !== true ? (s.reveals ? fc : ex) : null;
+      var target = revealed && fresh !== true ? (s.reveals ? fc : ($('.jvpcompare', card) || ex)) : null;
       if (target && target.scrollIntoView) target.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
     updateButtons();
@@ -247,7 +247,7 @@
   function scoreOf() {
     var total = 0, right = 0, answered = 0;
     S.forEach(function (s) {
-      if (typeof s.a !== 'number') return;
+      if (typeof s.a !== 'number' || s.bonus) return;
       total++;
       if (typeof sel[s.id] === 'number') { answered++; if (sel[s.id] === s.a) right++; }
     });
@@ -282,10 +282,10 @@
     $('#stage').scrollTop = 0;
     renderRail(s.id);
     $$('.tab').forEach(function (t, i) { t.setAttribute('aria-current', i === s.sec ? 'true' : 'false'); });
-    var n = S.length - 1;
-    $('#pos').innerHTML = (s.sec >= 0 ? A.sections[s.sec].name + ' &#183; ' : '') + '<span>' + (idx + 1) + '</span> / ' + (n + 1);
-    $('#progBar').style.width = (100 * idx / n) + '%';
-    if (TUTOR) $('#say').innerHTML = s.say || '';
+    var inBonus = idx >= FIRST_BONUS, first = inBonus ? FIRST_BONUS : 0, count = inBonus ? S.length - FIRST_BONUS : FIRST_BONUS;
+    $('#pos').innerHTML = (s.sec >= 0 ? A.sections[s.sec].name + ' &#183; ' : '') + '<span>' + (idx - first + 1) + '</span> / ' + count;
+    $('#progBar').style.width = (count > 1 ? 100 * (idx - first) / (count - 1) : 100) + '%';
+    if (TUTOR) { var by = finishBy(idx); $('#say').innerHTML = (by ? '<span class="tm">by ' + by + '</span> ' : '') + (s.say || ''); }
     try { history.replaceState(null, '', '#' + s.id); } catch (e) { }
     LS.set('pos', s.id);
     if (!TUTOR && CH) CH.postMessage({ id: s.id });
@@ -293,40 +293,48 @@
     try { window.scrollTo(0, 0); } catch (e) { }
     emit('nav', { id: s.id });
   }
-  function go(d) { var n = Math.max(0, Math.min(S.length - 1, idx + d)); if (n !== idx) render(S[n].id); }
+  function finishBy(i) {
+    if (i >= FIRST_BONUS) return '';
+    var sum = 0; for (var k = 0; k <= i; k++) sum += S[k].t || 0;
+    var sec = sum % 60;
+    return Math.floor(sum / 60) + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+  function bounds() { return idx >= FIRST_BONUS ? { lo: FIRST_BONUS - 1, hi: S.length - 1 } : { lo: 0, hi: FIRST_BONUS - 1 }; }
+  function go(d) { var b = bounds(), n = Math.max(b.lo, Math.min(b.hi, idx + d)); if (n !== idx) render(S[n].id); }
   function primary() { if (!advance()) go(1); }
   function updateButtons() {
-    var left = TUTOR ? 0 : remaining();
-    $('#reveal').disabled = left <= 0;
-    $('#reveal').textContent = left > 0 ? 'Reveal' + (stepsOf().length > 1 ? ' (' + left + ')' : '') : 'Reveal';
+    var left = TUTOR ? 0 : remaining(), rv = $('#reveal'), nx = $('#next');
+    rv.hidden = left <= 0;
+    rv.textContent = 'Reveal' + (stepsOf().length > 1 ? ' (' + left + ')' : '');
+    nx.classList.toggle('primary', left <= 0);
     $('#prev').disabled = idx === 0;
-    $('#next').disabled = idx === S.length - 1;
+    nx.hidden = idx === bounds().hi;
   }
 
   /* ---------- answers ---------- */
+  function revealAnswer() {
+    var ex = $('#stage .explain'), i = stepsOf().indexOf(ex), r = curRev();
+    if (i >= 0 && r.indexOf(i) < 0) { r.push(i); saveRev(); }
+    sync(ex);
+  }
   function pick(v) {
     var s = S[idx], card = $('#stage .card');
     if (card.classList.contains('rev') && !TUTOR) return;
     sel[s.id] = v; LS.set('sel', sel);
-    sync();
+    revealAnswer();
     emit('vote', { id: s.id, v: v });
   }
-  function toggleP(i) {
+  /* Tap-all tasks: each tap is marked right or wrong at once; the explanation opens when every right one is found. */
+  function tapPhrase(i) {
     var s = S[idx], card = $('#stage .card');
     if (card.classList.contains('rev')) return;
-    var cur = Array.isArray(sel[s.id]) ? sel[s.id].slice() : [], at = cur.indexOf(i);
-    if (at >= 0) cur.splice(at, 1); else cur.push(i);
+    var cur = Array.isArray(sel[s.id]) ? sel[s.id].slice() : [];
+    if (cur.indexOf(i) >= 0) return;
+    cur.push(i);
     sel[s.id] = cur; LS.set('sel', sel);
-    sync();
+    var allFound = $$('.ph.ok', card).every(function (p) { return cur.indexOf(+p.getAttribute('data-p')) >= 0; });
+    if (allFound) revealAnswer(); else sync();
     emit('vote', { id: s.id, v: cur });
-  }
-  function showCard() {
-    var v = sel[S[idx].id]; if (typeof v !== 'number') return;
-    var o = document.createElement('div');
-    o.className = 'anscard'; o.style.background = CARD_COL[v % CARD_COL.length];
-    o.innerHTML = '<b>' + LET[v] + '</b><span>ชูมือถือขึ้น แตะเพื่อปิด</span>';
-    o.addEventListener('click', function () { o.remove(); });
-    document.body.appendChild(o);
   }
 
   /* ---------- events ---------- */
@@ -334,7 +342,7 @@
     var t = e.target; if (!t || !t.closest) return;
     var b;
     if ((b = t.closest('.opt'))) { pick(+b.getAttribute('data-v')); b.blur(); return; }
-    if ((b = t.closest('.ph'))) { toggleP(+b.getAttribute('data-p')); return; }
+    if ((b = t.closest('.ph'))) { tapPhrase(+b.getAttribute('data-p')); b.blur(); return; }
     if ((b = t.closest('.tr'))) {
       var i = stepsOf().indexOf(b), r = curRev(), at = r.indexOf(i);
       if (at >= 0) r.splice(at, 1);
@@ -346,9 +354,9 @@
       if (a2 >= 0) rr.splice(a2, 1); else rr.push(st);
       saveRev(); sync(b); return;
     }
-    if (t.closest('.showcard')) { showCard(); return; }
     if (t.closest('.qrbtn') || t.closest('.qrthumb') || t.closest('.bigqrbtn')) { openQr(); return; }
     if ((b = t.closest('.tab'))) { var si = +b.getAttribute('data-sec'); for (var k = 0; k < S.length; k++) { if (S[k].sec === si) { render(S[k].id); break; } } return; }
+    if (t.closest('#morePractice')) { render(S[FIRST_BONUS].id); return; }
     if (t.closest('#startOver')) { rev = {}; sel = {}; LS.set('rev', rev); LS.set('sel', sel); render('start'); return; }
     if (t.tagName === 'IMG' && t.closest('.scan')) { fig2zoom(t); return; }
   });
@@ -372,7 +380,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
-    var ov = $('.overlay, .anscard');
+    var ov = $('.overlay');
     if (ov && (k === 'Escape' || k === ' ' || k === 'Enter' || k === 'q' || k === 'Q')) { ov.remove(); e.preventDefault(); return; }
     if (k === 'ArrowRight') { go(1); e.preventDefault(); return; }
     if (k === 'ArrowLeft') { go(-1); e.preventDefault(); return; }
@@ -425,12 +433,16 @@
     go: function (id) { if (byId[id] !== undefined && id !== S[idx].id) render(id); },
     current: function () { return S[idx]; },
     revealed: function () { return curRev().slice(); },
-    setRevealed: function (id, r) { rev[id] = r.slice(); if (S[idx].id === id) sync(true); },
+    setRevealed: function (id, r) {
+      var own = rev[id] || [];
+      rev[id] = r.concat(own.filter(function (i) { return r.indexOf(i) < 0; }));
+      if (S[idx].id === id) sync(true);
+    },
     votes: function () { return sel; }
   };
 
   /* Fetch every figure up front: reveals stay instant, and the deck survives Wi-Fi dropping after the first load. */
-  ['cxr-ac81.jpg', 'jvp-ac80.png', 'ecg-fig10-1.png', 'af-doglab.png', 'fast-ap-labslide.png'].forEach(function (f) { new Image().src = 'img/' + f; });
+  ['cxr-ac81.jpg', 'jvp-normal.png', 'jvp-ac80.png', 'ecg-fig10-1.png', 'af-doglab.png', 'fast-ap-labslide.png'].forEach(function (f) { new Image().src = 'img/' + f; });
 
   var want = location.hash ? location.hash.slice(1) : 'start';
   render(byId[want] !== undefined ? want : 'start');
