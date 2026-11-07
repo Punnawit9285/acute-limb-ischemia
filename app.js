@@ -127,10 +127,11 @@
       '<div class="kick">CVS I &#183; Case 4 &#183; Case presentation</div>' +
       '<h1>Acute limb ischemia</h1>' +
       '<p class="lede">อ่านเคส หา symptoms and signs แล้วต่อ flowchart กลไกด้วยกันทีละกล่อง</p>' + presenterHtml() +
+      '<a class="livelink" href="' + BASE + '" target="_blank" rel="noopener"><span class="lt">Interactive website: เปิดแล้วกดตอบได้เอง เฉลยขึ้นทันที</span><span class="lu">' + BASE.replace('https://', '').replace('.io/', '.io/<wbr>') + ' &#8599;</span></a>' +
       '<ol class="howto"><li>สแกน QR ของหน้าไหนก็ได้ มือถือจะเปิดหน้านั้นทันที</li>' +
       '<li>แตะคำตอบ <b>เฉลยขึ้นทันที</b></li></ol>' +
       '<p class="keys"><kbd>Space</kbd> reveal next &#183; <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> move &#183; <kbd>A</kbd>&#8211;<kbd>E</kbd> choose &#183; <kbd>Q</kbd> big QR &#183; <kbd>R</kbd> reset page &#183; <kbd>F</kbd> full screen</p>' +
-      '</div><div class="bigqr"><div class="scan-t">Scan to join</div><button type="button" class="bigqrbtn" aria-label="Enlarge QR">' + qrSvg('start') + '</button><div class="url">' + BASE.replace('https://', '') + '</div></div></div></article>';
+      '</div><div class="bigqr"><div class="scan-t">Scan to join</div><button type="button" class="bigqrbtn" aria-label="Enlarge QR">' + qrSvg('start') + '</button></div></div></article>';
   }
   function renderFrag(s) {
     return '<article class="card">' + eyebrow(s) + '<h2>' + s.title + '</h2><div class="casebox">' +
@@ -170,7 +171,7 @@
     } else {
       q = '<div class="stem">' + s.q + '</div>' + optsHtml(s) + explainHtml(s);
     }
-    return '<article class="card pollcard' + (s.kind === 'flowtap' ? ' tapcard' : '') + '">' + eyebrow(s) + '<div class="flowgrid pollflow"><div class="fcwrap">' + flowHtml({ known: s.known, reveals: s.reveals }) + '</div><div class="pcol">' + q + '</div></div></article>';
+    return '<article class="card pollcard' + (s.kind === 'flowtap' ? ' tapcard' : '') + '">' + eyebrow(s) + '<div class="flowgrid pollflow"><div class="fcwrap">' + flowHtml({ known: s.known, reveals: s.reveals }) + (s.afterChart || '') + '</div><div class="pcol">' + q + '</div></div></article>';
   }
   function renderTrace(s) {
     if (PDF) return '<article class="card">' + eyebrow(s) + '<h2>' + s.title + '</h2><div class="flowgrid"><div>' + flowHtml({ known: Object.keys(FLOW.nodes), large: true }) + '</div>' +
@@ -367,6 +368,7 @@
       if (a2 >= 0) rr.splice(a2, 1); else rr.push(st);
       saveRev(); sync(b); return;
     }
+    if ((b = t.closest('a'))) { b.blur(); return; }
     if (t.closest('.qrbtn') || t.closest('.qrthumb') || t.closest('.bigqrbtn')) { openQr(); return; }
     if ((b = t.closest('.tab'))) { var si = +b.getAttribute('data-sec'); for (var k = 0; k < S.length; k++) { if (S[k].sec === si) { render(S[k].id); break; } } return; }
     if (t.closest('#morePractice')) { render(S[FIRST_BONUS].id); return; }
@@ -398,7 +400,7 @@
     if (k === 'ArrowRight') { go(1); e.preventDefault(); return; }
     if (k === 'ArrowLeft') { go(-1); e.preventDefault(); return; }
     if (k === ' ' || k === 'Enter') {
-      var ctl = e.target && e.target.closest ? e.target.closest('button, [role="button"]') : null;
+      var ctl = e.target && e.target.closest ? e.target.closest('button, [role="button"], a') : null;
       if (ctl) { e.preventDefault(); ctl.click(); ctl.blur(); return; }
     }
     if (k === ' ' || k === 'Enter' || k === 'PageDown') { primary(); e.preventDefault(); return; }

@@ -9,7 +9,7 @@ Click-through case presentation for CVS I. People scan a QR code and work throug
 
 Cover, **Sources and search**, 10 content slides, **References** (APA 7). Sources are named on the first and last talk slides only, so the content slides stay uncluttered. Figure captions still credit their source.
 
-The talk is budgeted at 5:50 for a 6-minute slot, and the tutor view shows a "by m:ss" target on each slide. If time runs short, skip the JVP slide first. The 11 slides after the references are **More practice**: reachable from the references slide or the tab, and Next never runs into them.
+The talk is budgeted at 5:55 for a 6-minute slot, and the tutor view shows a "by m:ss" target on each slide. If time runs short, skip the JVP slide first. The 11 slides after the references are **More practice**: reachable from the references slide or the tab, and Next never runs into them.
 
 Hand-in is a PDF of at most 10 MB. Build it with `npm run pdf`.
 

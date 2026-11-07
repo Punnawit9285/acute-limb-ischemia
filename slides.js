@@ -82,9 +82,9 @@ window.ALI = (function () {
     { id: 'method', kind: 'concept', sec: 0, t: 40, tag: 'Sources and search', title: 'แหล่งข้อมูลและวิธีสืบค้น',
       html: '<div class="tblwrap"><table class="tbl method"><thead><tr><th>สืบค้นเรื่อง</th><th>จากแหล่งใด</th></tr></thead><tbody>' +
         '<tr><td>Symptoms and signs, ตำแหน่ง embolus</td><td>Review: Obara et al. (2018), Olinic et al. (2019), Shukuzawa et al. (2026)</td></tr>' +
-        '<tr><td>AF, clot ใน appendage, JVP</td><td>Chapter 9, 13, 37 <i>Guyton and Hall Textbook of Medical Physiology</i>, 14th edition, Hall &amp; Hall (2021); Sulague et al. (2023); Blackshear &amp; Odell (1996); Stanford Medicine 25</td></tr>' +
+        '<tr><td>AF, clot ใน appendage, JVP</td><td>Chapter 9, 13, 37 <i>Guyton and Hall Textbook of Medical Physiology</i>, 14th ed., Hall &amp; Hall (2021); Sulague et al. (2023); Blackshear &amp; Odell (1996); Stanford Medicine 25</td></tr>' +
         '<tr><td>Flow ลด, cuff 200 mmHg</td><td>Chapter 15, 16, 17, 25, 74 Guyton and Hall; ปฏิบัติการสรีรวิทยา 16, จุไรพร สมบุญวงค์</td></tr>' +
-        '<tr><td>Hypoxia, ATP, lactate</td><td>Chapter 21, 68 Guyton and Hall; Costa et al. (2024); Simon et al. (2018)</td></tr>' +
+        '<tr><td>Hypoxia, ATP, lactate</td><td>Chapter 21, 68 Guyton and Hall; Cardiac Biochemistry, Prapunwattana; Costa et al. (2024); Simon et al. (2018)</td></tr>' +
         '<tr><td>Nerve, pain, muscle</td><td>Chapter 5, 6, 49 Guyton and Hall; Akimoto et al. (2023); Mogyoros et al. (2000)</td></tr>' +
         '<tr><td>คำถามและรูปจากข้อสอบเก่า</td><td>ไฟล์รายวิชา AC80 และ tAChycardia 81 (ไม่ได้ตีพิมพ์)</td></tr>' +
         '</tbody></table></div>' +
@@ -141,7 +141,10 @@ window.ALI = (function () {
       ],
       say: 'Blocked artery, less flow. Three of the six come straight from that. The other three need the middle box.' },
 
-    { id: 'f3', kind: 'flowpoll', sec: 3, t: 30, tag: 'Past exam in the flowchart', src: 'AC80', known: ['occl', 'flow', 'pulse', 'hypox', 'skin'], reveals: ['atp'],
+    { id: 'f3', kind: 'flowpoll', sec: 3, t: 35, tag: 'Past exam in the flowchart', src: 'AC80', known: ['occl', 'flow', 'pulse', 'hypox', 'skin'], reveals: ['atp'],
+      afterChart: '<div class="mini art ldcard onlyrev"><h4>Cardiac muscle: LD1 (H<sub>4</sub>)</h4>' +
+        '<p>LD1 มากที่สุด (60%) K<sub>m</sub> ของ lactate ต่ำ ปกติหัวใจจึงเปลี่ยน lactate &#8594; pyruvate ใช้เป็นเชื้อเพลิง</p>' +
+        '<p>ขาด O<sub>2</sub>: pyruvate และ NADH คั่ง จึงเกิด <b>lactic acid</b> สะสมแทน</p></div>',
       q: 'A patient experiences chest pain due to cardiac ischemia. What happens in anaerobic respiration of cardiac muscle?',
       o: ['Lactic acid from glycolysis', 'Fatty acid oxidation', 'Pyruvate accumulation in mitochondria', 'Use ketone body as main energy source'], a: 0,
       why: [
@@ -149,7 +152,7 @@ window.ALI = (function () {
         'ได้ ATP น้อยมาก hypoxia จึงนำไปสู่ <b>&#8595;ATP</b>',
         'ข้อสอบถามหัวใจ แต่กล้ามเนื้อขาใช้หลักเดียวกัน'
       ],
-      say: 'The exam asked about the heart. Same logic in the leg: no oxygen, little ATP.' },
+      say: 'The exam asked about the heart. Normally the heart burns lactate, because LD1 favours lactate to pyruvate. With no oxygen, pyruvate and NADH pile up, so lactate builds instead. Same logic in the leg: no oxygen, little ATP.' },
 
     { id: 'f5', kind: 'flowpoll', sec: 3, t: 30, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow', 'pulse', 'hypox', 'skin', 'atp'], reveals: ['nerve', 'sens', 'pain'],
       q: 'Which <b>ATP-dependent</b> protein keeps a nerve&#8217;s resting membrane potential?',
@@ -214,6 +217,7 @@ window.ALI = (function () {
         '<li>Obara, H., Matsubara, K., &amp; Kitagawa, Y. (2018). Acute limb ischemia. <i>Annals of Vascular Diseases, 11</i>(4), 443&#8211;448. <a href="https://doi.org/10.3400/avd.ra.18-00074">https://doi.org/10.3400/avd.ra.18-00074</a></li>' +
         '<li>Olinic, D.-M., Stanek, A., T&#259;taru, D.-A., Homorodean, C., &amp; Olinic, M. (2019). Acute limb ischemia: An update on diagnosis and management. <i>Journal of Clinical Medicine, 8</i>(8), Article 1215. <a href="https://doi.org/10.3390/jcm8081215">https://doi.org/10.3390/jcm8081215</a></li>' +
         '<li>Peer Support 81. (n.d.). <i>tAChycardia 81: 3050116 Cardiovascular System I</i> [Unpublished MCQ recall file].</li>' +
+        '<li>Prapunwattana, P. (n.d.). <i>Cardiac biochemistry</i> [Lecture slides]. Chulalongkorn University.</li>' +
         '<li>Shukuzawa, K., Ozawa, H., &amp; Ohki, T. (2026). Revascularization for acute limb ischemia. <i>Annals of Vascular Diseases, 19</i>(1), Article 26-00066. <a href="https://doi.org/10.3400/avd.ra.26-00066">https://doi.org/10.3400/avd.ra.26-00066</a></li>' +
         '<li>Simon, F., Oberhuber, A., Floros, N., Busch, A., Wagenh&#228;user, M. U., Schelzig, H., &amp; Duran, M. (2018). Acute limb ischemia&#8212;Much more than just a lack of oxygen. <i>International Journal of Molecular Sciences, 19</i>(2), Article 374. <a href="https://doi.org/10.3390/ijms19020374">https://doi.org/10.3390/ijms19020374</a></li>' +
         '<li>Stanford Medicine. (n.d.). <i>JVP waveform</i> [Image]. Wikimedia Commons. <a href="https://commons.wikimedia.org/wiki/File:JVP_waveform.png">https://commons.wikimedia.org/wiki/File:JVP_waveform.png</a></li>' +
