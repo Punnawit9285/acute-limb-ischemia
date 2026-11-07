@@ -173,6 +173,8 @@
     return '<article class="card pollcard' + (s.kind === 'flowtap' ? ' tapcard' : '') + '">' + eyebrow(s) + '<div class="flowgrid pollflow"><div class="fcwrap">' + flowHtml({ known: s.known, reveals: s.reveals }) + '</div><div class="pcol">' + q + '</div></div></article>';
   }
   function renderTrace(s) {
+    if (PDF) return '<article class="card">' + eyebrow(s) + '<h2>' + s.title + '</h2><div class="flowgrid"><div>' + flowHtml({ known: Object.keys(FLOW.nodes), large: true }) + '</div>' +
+      '<ul class="tracelist">' + s.traces.map(function (t) { return '<li><b>' + t.t + '</b>' + t.line + '</li>'; }).join('') + '</ul></div></article>';
     return '<article class="card">' + eyebrow(s) + '<h2>' + s.title + '</h2><div class="flowgrid"><div>' + flowHtml({ known: Object.keys(FLOW.nodes), large: true }) + '</div>' +
       '<div class="pcol"><div class="tracebar">' + s.traces.map(function (t, i) {
         return '<button type="button" class="tr" data-step data-tr="' + i + '">' + t.t + '</button>';
@@ -216,7 +218,7 @@
         el.classList.toggle('blank', !on);
         if (on && fresh === el) el.classList.add('fresh');
       });
-      if (s.kind === 'trace') applyTrace(s, fc, r);
+      if (s.kind === 'trace' && !PDF) applyTrace(s, fc, r);
       drawEdges(fc);
     }
 

@@ -2,9 +2,8 @@
    {{text}} = click-to-reveal cloze blank. [[text]] = tappable phrase, [[+text]] = tappable phrase that is correct.
    The case text is verbatim. The flowchart follows the lecture's mechanism.
 
-   The talk is the slides before the first `bonus: true`, in order: cover, 6 numbered slides, references (course limit: 6 slides
-   not counting cover and references, 6 minutes). `t` is the time budget in seconds.
-   c('5 Ch13, 2') writes a citation. Numbers point at the reference list on the last talk slide, in order of first appearance.
+   The talk is the slides before the first `bonus: true`, in order: cover, sources and search, the case, references.
+   `t` is its time budget in seconds (6 minutes in total). Sources are named on the first and last talk slides only.
    Bonus slides are "More practice": reachable from the last slide and the tab, never by pressing Next through the talk. */
 window.ALI = (function () {
 
@@ -43,12 +42,12 @@ window.ALI = (function () {
     { k: 'B', name: 'The case' },
     { k: 'C', name: 'Clot source' },
     { k: 'D', name: 'Mechanism' },
-    { k: 'E', name: 'References' },
+    { k: 'E', name: 'Lab link' },
+    { k: 'F', name: 'Take-home' },
+    { k: 'G', name: 'References' },
     { k: '+', name: 'More practice' }
   ];
-  var BONUS = 5;
-
-  function c(s) { return '<sup class="cite">' + s + '</sup>'; }
+  var BONUS = 7;
 
   function fig(src, cap, source, cls) {
     return '<figure class="scan ' + (cls || '') + '"><div class="paperimg"><img src="img/' + src + '" alt="' + cap.replace(/<[^>]+>/g, '').replace(/"/g, '') + '"></div>' +
@@ -70,138 +69,55 @@ window.ALI = (function () {
       box(245, 328, 364, 398, 'SVC') +
       box(31, 660, 273, 781, 'Right atrial border') +
       box(221, 907, 326, 977, 'IVC') +
-      '</div><figcaption>Left heart border on a PA film. <span class="src">รูปจากไฟล์ทบทวน AC81, ป้ายจาก AC80 (ไม่ได้ตีพิมพ์)</span></figcaption></figure>';
+      '</div><figcaption>Left heart border on a PA film. <span class="src">AC81 Imaging, labels from AC80</span></figcaption></figure>';
   }
 
   var slides = [
 
-    /* ========== THE 6-MINUTE TALK: cover, slides 1-6, references ========== */
+    /* ========== THE 6-MINUTE TALK ========== */
 
     { id: 'start', kind: 'title', sec: -1, t: 10,
       say: 'QR up while people arrive. Scan, then tap any choice: the answer shows straight away.' },
 
-    { id: 'method', kind: 'concept', sec: 0, t: 50, tag: 'Sources and search', title: 'แหล่งข้อมูลและวิธีสืบค้น',
-      html: '<div class="tblwrap"><table class="tbl method"><thead><tr><th>สืบค้นเรื่อง</th><th>จากแหล่งใด</th><th>เข้าถึงอย่างไร</th></tr></thead><tbody>' +
-        '<tr><td>Symptoms and signs, ตำแหน่ง embolus, เวลาที่เนื้อเยื่อทนได้</td><td>Review: Olinic 2019' + c('1') + ', Obara 2018' + c('2') + ', Shukuzawa 2026' + c('3') + ', Simon 2018' + c('4') + '</td><td>PubMed (A), full text ผ่าน PMC</td></tr>' +
-        '<tr><td>AF ทำให้เกิด clot ที่ appendage</td><td>Chapter 13, 37 <i>Guyton and Hall Textbook of Medical Physiology</i>, 14th ed, 2021, Hall JE, Hall ME' + c('5') + '; Sulague 2023' + c('6') + '; Blackshear 1996' + c('7') + '</td><td>ไฟล์หนังสือ; PubMed (B), PMC; ตัวเลขต้นทาง: PubMed, abstract</td></tr>' +
-        '<tr><td>Flow ลด: ไม่มี pulse, ซีด, เย็น</td><td>Chapter 15, 17, 74 Guyton' + c('5') + '; เอกสารปฏิบัติการสรีรวิทยา 16, จุไรพร สมบุญวงค์' + c('8') + '</td><td>ไฟล์หนังสือ; เอกสารรายวิชา</td></tr>' +
-        '<tr><td>Hypoxia: ATP ลด</td><td>Chapter 68 Guyton' + c('5') + '; Costa 2024' + c('9') + '</td><td>ไฟล์หนังสือ; PubMed (A), PMC</td></tr>' +
-        '<tr><td>Nerve: pump, tingling, numbness, pain</td><td>Chapter 5, 49 Guyton' + c('5') + '; Akimoto 2023' + c('10') + '; Mogyoros 2000' + c('11') + '</td><td>ไฟล์หนังสือ; web search, PMC; PubMed (C), abstract</td></tr>' +
-        '<tr><td>Muscle: crossbridge, paralysis</td><td>Chapter 6 Guyton' + c('5') + '; Costa 2024' + c('9') + '; Obara 2018' + c('2') + '</td><td>ไฟล์หนังสือ; PubMed (A), PMC</td></tr>' +
+    { id: 'method', kind: 'concept', sec: 0, t: 40, tag: 'Sources and search', title: 'แหล่งข้อมูลและวิธีสืบค้น',
+      html: '<div class="tblwrap"><table class="tbl method"><thead><tr><th>สืบค้นเรื่อง</th><th>จากแหล่งใด</th></tr></thead><tbody>' +
+        '<tr><td>Symptoms and signs, ตำแหน่ง embolus</td><td>Review: Obara et al. (2018), Olinic et al. (2019), Shukuzawa et al. (2026)</td></tr>' +
+        '<tr><td>AF, clot ใน appendage, JVP</td><td>Chapter 9, 13, 37 <i>Guyton and Hall Textbook of Medical Physiology</i>, 14th edition, Hall &amp; Hall (2021); Sulague et al. (2023); Blackshear &amp; Odell (1996); Stanford Medicine 25</td></tr>' +
+        '<tr><td>Flow ลด, cuff 200 mmHg</td><td>Chapter 15, 16, 17, 25, 74 Guyton and Hall; ปฏิบัติการสรีรวิทยา 16, จุไรพร สมบุญวงค์</td></tr>' +
+        '<tr><td>Hypoxia, ATP, lactate</td><td>Chapter 21, 68 Guyton and Hall; Costa et al. (2024); Simon et al. (2018)</td></tr>' +
+        '<tr><td>Nerve, pain, muscle</td><td>Chapter 5, 6, 49 Guyton and Hall; Akimoto et al. (2023); Mogyoros et al. (2000)</td></tr>' +
+        '<tr><td>คำถามและรูปจากข้อสอบเก่า</td><td>ไฟล์รายวิชา AC80 และ tAChycardia 81 (ไม่ได้ตีพิมพ์)</td></tr>' +
         '</tbody></table></div>' +
+        '<div class="searchbox"><b>สืบค้นวันที่ 7 พ.ย. 2569 ใน PubMed และ web search</b>' +
         '<ul class="searches">' +
-        '<li><b>A</b> <code>"acute limb ischemia"[Title] AND 2018:2026[dp]</code> 476 รายการ</li>' +
-        '<li><b>B</b> <code>"left atrial appendage"[Title] AND "atrial fibrillation"[Title] AND review[pt] AND 2018:2026[dp]</code> 147 รายการ</li>' +
-        '<li><b>C</b> <code>paresthesia[tiab] AND ischemia[tiab] AND axons[tiab]</code> 1 รายการ</li>' +
+        '<li><code>"acute limb ischemia"[Title] AND 2018:2026[dp]</code> 476 รายการ</li>' +
+        '<li><code>"left atrial appendage"[Title] AND "atrial fibrillation"[Title] AND review[pt] AND 2018:2026[dp]</code> 147 รายการ</li>' +
+        '<li><code>paresthesia[tiab] AND ischemia[tiab] AND axons[tiab]</code> 1 รายการ</li>' +
         '</ul>' +
-        '<p class="note">ค้นวันที่ 7 พ.ย. 2569 ด้วย PubMed และ web search. เลือก review ภาษาอังกฤษที่เปิดอ่านได้ เทียบข้อมูลคลินิกระหว่างแหล่ง และระบุจุดที่ต่างกัน. งานก่อนปี 2018 ใช้เฉพาะตัวเลขต้นทาง' + c('7') + ' และกลไก paresthesia' + c('11') + '. ใช้ Claude (AI) ช่วยสืบค้นและร่างสไลด์ ทุกการอ้างอิงตรวจกับเนื้อหาในต้นฉบับ.</p>',
-      say: 'Say this before the case. Textbook: Guyton and Hall, 14th edition, Hall and Hall, 2021, chapters as listed. Journals: PubMed title search on 7 November, then review articles I could open. Newest is Shukuzawa, Annals of Vascular Diseases, May 2026. Full details on the last slide. If asked: the 15th edition (2026) exists, this is the edition read; the ESVS 2020 guideline was not opened.' },
+        '<p>เลือก review ที่เปิดอ่านได้และเทียบข้อมูลระหว่างแหล่ง ใช้ Claude (AI) ช่วยสืบค้นและร่างสไลด์ แล้วตรวจการอ้างอิงกับต้นฉบับ</p></div>',
+      say: 'Say this before the case. Textbook: Guyton and Hall, 14th edition, Hall and Hall, 2021. Journals: PubMed title search on 7 November, then review articles I could open. Newest is Shukuzawa, Annals of Vascular Diseases, 2026. If asked: older papers are kept only for the original 91 percent figure and the paresthesia mechanism; the 15th edition (2026) exists but this is the edition read; the ESVS 2020 guideline was not opened.' },
 
     { id: 'tap', kind: 'tap', sec: 1, t: 50, tag: 'Find them', src: 'Case',
       title: 'The case: tap the <span class="hl">6 symptoms and signs</span>',
       text: CASE_TAP,
       why: [
-        'หกข้อตรงกับ classic signs: <b>pain, pallor, paresthesia, poikilothermia, pulse deficit, paralysis</b>' + c('1'),
-        'แหล่งไม่ตรงกัน: บางแหล่งใช้ 5 Ps' + c('2,3') + ' หรือนับ <b>prostration</b> เป็นข้อที่ 6' + c('3,4') + ' แต่อาการเย็นในเคสนี้ตรงกับ poikilothermia' + c('1'),
+        'หกข้อนี้คือ <b>6 Ps</b>: pain, pallor, paresthesia, poikilothermia, pulselessness, paralysis <span class="src">mnemonic ทางคลินิก นอกสไลด์บรรยาย</span>',
         'อายุ ประวัติ AF เวลา และผล CT angiogram <b>ไม่ใช่</b> symptoms หรือ signs'
       ],
-      say: 'Read the case fast and let them tap. Each tap marks right or wrong at once. Space shows all six. Point out that sources disagree on the sixth P.' },
+      say: 'Read the case fast and let them tap. Each tap marks right or wrong at once. Space shows all six.' },
 
-    { id: 'q2', kind: 'poll', sec: 2, t: 45, tag: 'Case question', src: 'Case', layout: 'fig',
+    { id: 'q2', kind: 'poll', sec: 2, t: 30, tag: 'Case question', src: 'Case', layout: 'fig',
       q: 'He has <b>atrial fibrillation</b>. Where did this embolus most likely form?',
       o: ['Right atrial appendage', 'Femoral vein', 'Left atrial appendage', 'Left ventricular outflow tract'], a: 2,
       figHtml: cxr(),
       why: [
-        'AF เป็นสาเหตุหลักของ cardiac embolism' + c('2,3') + ': atria บีบตัวลดลง เลือดคั่ง เกิด clot ใน <b>atrial appendage</b>' + c('5 Ch13'),
-        'Nonrheumatic AF: left atrial thrombus ราว <b>90%</b> อยู่ที่ appendage' + c('6,7'),
-        'ก้อนจากหัวใจซีกซ้ายไปตาม aorta จนอุดหลอดเลือดส่วนปลาย' + c('5 Ch37') + ' <b>femoral a.</b> พบบ่อยที่สุด' + c('2'),
-        'ก้อนจาก vein หรือหัวใจซีกขวาไปที่ <b>pulmonary a.</b>' + c('5 Ch37')
+        'AF: atria สั่นพลิ้ว ไม่บีบตัวเป็นจังหวะ &#8594; เลือดคั่ง (stasis) ใน <b>left atrial appendage</b> &#8594; เกิด thrombus',
+        'Embolus: LA &#8594; LV &#8594; aorta &#8594; iliac &#8594; <b>femoral a.</b>',
+        'ก้อนจาก vein หรือหัวใจซีกขวาไปติดที่ <b>pulmonary a.</b> ไม่ใช่ขา'
       ],
-      say: 'Route: left heart, aorta, iliac, femoral. The 91 percent is from Blackshear 1996, 23 studies, abstract read; Sulague 2023 repeats about 90 percent. The chest film is a course recall file, not a published source.' },
+      say: 'Point to the orange arrow. Route: left heart, aorta, iliac, femoral.' },
 
-    { id: 'f2', kind: 'flowtap', sec: 3, t: 45, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow'], reveals: ['pulse', 'hypox', 'skin'],
-      q: 'Less flow <b>alone</b> explains which <b>3</b> findings, before any cell runs out of energy?',
-      chips: [{ t: 'Absent pulse', ok: 1 }, { t: 'Numbness' }, { t: 'Pale skin', ok: 1 }, { t: 'Cold skin', ok: 1 }, { t: 'Pain' }, { t: 'Cannot move toes' }],
-      why: [
-        '<b>Pulse</b>: pressure pulse เป็นคลื่นที่วิ่งไปตาม artery' + c('5 Ch15') + ' ตันสนิทจึงผ่านไม่ได้',
-        '<b>Pale</b>: เลือดเข้าผิวหนังน้อยลง สีผิวจึงซีด' + c('8'),
-        '<b>Cold</b>: ผิวหนังรับความร้อนจากเลือดที่ไหลมาจาก core' + c('5 Ch74'),
-        '<b>Sudden, severe</b>: embolus ตันทันที ไม่มี collateral' + c('1,2') + ' ซึ่งต้องใช้เวลาเปิดและเติบโต' + c('5 Ch17'),
-        'Lab: cuff 200 mmHg คือการอุดเลือดแดงชั่วคราวแบบเดียวกัน' + c('8')
-      ],
-      say: 'Blocked artery, less flow. Three of the six come straight from that. The other three need the middle box.' },
-
-    { id: 'f5', kind: 'flowpoll', sec: 3, t: 60, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow', 'pulse', 'hypox', 'skin'], reveals: ['atp', 'nerve', 'sens', 'pain'],
-      q: 'Which <b>ATP-dependent</b> protein maintains the Na<sup>+</sup>/K<sup>+</sup> gradients of a resting nerve?',
-      o: ['SERCA', 'Funny channel', 'Na<sup>+</sup>/K<sup>+</sup>-ATPase', 'Nicotinic ACh receptor'], a: 2,
-      why: [
-        '<b>&#8595;ATP</b>: ไม่มี O<sub>2</sub> เหลือ anaerobic glycolysis ได้พลังงานราว 3% ของ glucose พร้อม lactic acid' + c('5 Ch68'),
-        'Nerve ขาดเลือด: ATP และ pump ลดลง &#8594; membrane <b>depolarize</b>' + c('5 Ch5, 10'),
-        '<b>Tingling</b>: threshold ลดก่อน เกิด ectopic impulses' + c('10,11'),
-        '<b>Numbness</b>: threshold เพิ่มภายหลัง' + c('10') + ' Na<sup>+</sup> channel ที่ inactivate เปิดไม่ได้จนกว่าจะ repolarize' + c('5 Ch5') + ' จึงน่าจะส่งสัญญาณไม่ได้',
-        '<b>Pain</b>: lactic acid, bradykinin, proteolytic enzymes กระตุ้น pain nerve endings' + c('5 Ch49')
-      ],
-      say: 'No oxygen, little ATP. Pump falls, membrane depolarizes: tingling first, then numbness. If asked: the numbness step is reasoned from Akimoto plus Guyton, neither states it outright. Guyton explains pain by chemicals on pain endings, so the chart box is a simplification.' },
-
-    { id: 'f6', kind: 'flowpoll', sec: 3, t: 50, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow', 'pulse', 'hypox', 'skin', 'atp', 'nerve', 'sens', 'pain'], reveals: ['muscle', 'para'],
-      q: 'Why can&#8217;t muscle contract normally without ATP?',
-      o: ['Troponin C is destroyed', 'Actin filaments dissolve', 'ACh blocks the motor end plate', 'Crossbridge cycling fails: myosin needs ATP to release actin'], a: 3,
-      why: [
-        'Hypoxia ทำให้ ATP ใน skeletal muscle ลดลง' + c('9') + ' ATP โมเลกุลใหม่ทำให้ myosin หลุดจาก actin ขาด ATP จึงเกิด <b>abnormal crossbridge</b>' + c('5 Ch6'),
-        'Paralysis จึงมาได้ <b>2 ทาง</b>: muscle และ nerve' + c('2'),
-        '<b>เวลา</b>: เสียหายถาวรที่ nerve 4&#8211;6 ชม., muscle 6&#8211;8 ชม., skin 8&#8211;12 ชม.' + c('2') + ' บางแหล่งให้ 4&#8211;6 ชม. ทั้ง nerve และ muscle' + c('4') + ' เคสนี้มาที่ 3 ชม. จึงต้องรีบเปิดหลอดเลือด'
-      ],
-      say: 'Take-home in one breath: AF makes the clot, the block cuts flow, flow explains pulse, pale and cold; hypoxia and low ATP explain sensation, pain and weakness. At 3 hours the nerve window is about to close.' },
-
-    { id: 'refs', kind: 'end', sec: 4, t: 10, tag: 'Vancouver', title: 'References',
-      html: '<ol class="reflist">' +
-        '<li>Olinic DM, Stanek A, T&#259;taru DA, Homorodean C, Olinic M. Acute limb ischemia: an update on diagnosis and management. J Clin Med. 2019 Aug 14;8(8):1215. <a href="https://doi.org/10.3390/jcm8081215">doi:10.3390/jcm8081215</a></li>' +
-        '<li>Obara H, Matsubara K, Kitagawa Y. Acute limb ischemia. Ann Vasc Dis. 2018 Dec 25;11(4):443-8. <a href="https://doi.org/10.3400/avd.ra.18-00074">doi:10.3400/avd.ra.18-00074</a></li>' +
-        '<li>Shukuzawa K, Ozawa H, Ohki T. Revascularization for acute limb ischemia. Ann Vasc Dis. 2026 May 23;19(1):26-00066. <a href="https://doi.org/10.3400/avd.ra.26-00066">doi:10.3400/avd.ra.26-00066</a></li>' +
-        '<li>Simon F, Oberhuber A, Floros N, Busch A, Wagenh&#228;user MU, Schelzig H, et al. Acute limb ischemia: much more than just a lack of oxygen. Int J Mol Sci. 2018 Jan 26;19(2):374. <a href="https://doi.org/10.3390/ijms19020374">doi:10.3390/ijms19020374</a></li>' +
-        '<li>Hall JE, Hall ME. Guyton and Hall textbook of medical physiology. 14th ed. Philadelphia: Elsevier; 2021. Ch 5, p. 66, 68; Ch 6, p. 84, 91; Ch 13, p. 166; Ch 15, p. 185-6; Ch 17, p. 212-3; Ch 37, p. 486; Ch 49, p. 614; Ch 68, p. 850; Ch 74, p. 901-2.</li>' +
-        '<li>Sulague RM, Whitham T, Danganan LML, Effiom V, Candelario K, Latif N, et al. The left atrial appendage and atrial fibrillation: a contemporary review. J Clin Med. 2023 Nov 2;12(21):6909. <a href="https://doi.org/10.3390/jcm12216909">doi:10.3390/jcm12216909</a></li>' +
-        '<li>Blackshear JL, Odell JA. Appendage obliteration to reduce stroke in cardiac surgical patients with atrial fibrillation. Ann Thorac Surg. 1996 Feb;61(2):755-9. <a href="https://doi.org/10.1016/0003-4975(95)00887-X">doi:10.1016/0003-4975(95)00887-X</a> [abstract]</li>' +
-        '<li>&#3592;&#3640;&#3652;&#3619;&#3614;&#3619; &#3626;&#3617;&#3610;&#3640;&#3597;&#3623;&#3591;&#3588;&#3660;. &#3611;&#3599;&#3636;&#3610;&#3633;&#3605;&#3636;&#3585;&#3634;&#3619;&#3626;&#3619;&#3637;&#3619;&#3623;&#3636;&#3607;&#3618;&#3634; 16: &#3619;&#3632;&#3610;&#3610;&#3652;&#3627;&#3621;&#3648;&#3623;&#3637;&#3618;&#3609;&#3648;&#3621;&#3639;&#3629;&#3604;&#3586;&#3609;&#3634;&#3604;&#3648;&#3621;&#3655;&#3585; [&#3648;&#3629;&#3585;&#3626;&#3634;&#3619;&#3611;&#3599;&#3636;&#3610;&#3633;&#3605;&#3636;&#3585;&#3634;&#3619;]. &#3585;&#3619;&#3640;&#3591;&#3648;&#3607;&#3614;&#3631;: &#3616;&#3634;&#3588;&#3623;&#3636;&#3594;&#3634;&#3626;&#3619;&#3637;&#3619;&#3623;&#3636;&#3607;&#3618;&#3634; &#3588;&#3603;&#3632;&#3649;&#3614;&#3607;&#3618;&#3624;&#3634;&#3626;&#3605;&#3619;&#3660; &#3592;&#3640;&#3628;&#3634;&#3621;&#3591;&#3585;&#3619;&#3603;&#3660;&#3617;&#3627;&#3634;&#3623;&#3636;&#3607;&#3618;&#3634;&#3621;&#3633;&#3618;; [&#3652;&#3617;&#3656;&#3619;&#3632;&#3610;&#3640;&#3611;&#3637;].</li>' +
-        '<li>Costa D, Ielapi N, Perri P, Minici R, Faga T, Michael A, et al. Molecular insight into acute limb ischemia. Biomolecules. 2024 Jul 11;14(7):838. <a href="https://doi.org/10.3390/biom14070838">doi:10.3390/biom14070838</a></li>' +
-        '<li>Akimoto T, Ogawa K, Hara M, Ninomiya S, Ishihara M, Morita A, et al. Clinical features of acute ischemic stroke patients with hypoesthesia as an initial symptom. Neurol Int. 2023 Mar 15;15(1):508-17. <a href="https://doi.org/10.3390/neurolint15010030">doi:10.3390/neurolint15010030</a></li>' +
-        '<li>Mogyoros I, Bostock H, Burke D. Mechanisms of paresthesias arising from healthy axons. Muscle Nerve. 2000 Mar;23(3):310-20. <a href="https://doi.org/10.1002/(SICI)1097-4598(200003)23:3%3C310::AID-MUS2%3E3.0.CO;2-A">doi:10.1002/(SICI)1097-4598(200003)23:3&lt;310::AID-MUS2&gt;3.0.CO;2-A</a> [abstract]</li>' +
-        '</ol>' +
-        '<p class="srcline">Figure, slide 3: chest film from the CVS I recall file AC81 CVS MCQ, labels from AC80 CVS1 MCQ. Internal course files, not published.</p>',
-      say: 'Ten seconds: everything is cited in Vancouver style, DOIs are links. Tell them More practice stays on their phones.' },
-
-    /* ========== MORE PRACTICE: after the talk, on their own ========== */
-
-    { id: 'take', kind: 'concept', sec: BONUS, bonus: true, tag: 'Take-home', title: 'Three things to keep',
-      html: '<ol class="takehome">' +
-        '<li><b>Source</b>: AF &#8594; stasis in the <b>left atrial appendage</b> &#8594; embolus &#8594; <b>femoral artery</b>.</li>' +
-        '<li><b>Mechanism</b>: <b>less flow</b> directly gives no pulse, cold and pale skin. <b>Hypoxia and &#8595;ATP</b> damage nerve and muscle, giving abnormal sensation, pain and paralysis.</li>' +
-        '<li><b>Lab link</b>: same as a 200 mmHg cuff, so <b>no edema</b>. Acute means no time for <b>collaterals</b>.</li>' +
-        '</ol>',
-      say: 'Three lines to keep.' },
-
-    { id: 'f3', kind: 'flowpoll', sec: BONUS, bonus: true, tag: 'Past exam in the flowchart', src: 'AC80', known: ['occl', 'flow', 'pulse', 'hypox', 'skin'], reveals: ['atp'],
-      q: 'A patient experiences chest pain due to cardiac ischemia. What happens in anaerobic respiration of cardiac muscle?',
-      o: ['Lactic acid from glycolysis', 'Fatty acid oxidation', 'Pyruvate accumulation in mitochondria', 'Use ketone body as main energy source'], a: 0,
-      why: [
-        'ไม่มี O<sub>2</sub> &#8594; oxidative phosphorylation หยุด &#8594; เหลือ <b>glycolysis</b> &#8594; pyruvate &#8594; <b>lactate</b>',
-        'ได้ ATP น้อยมาก hypoxia จึงนำไปสู่ <b>&#8595;ATP</b>',
-        'ข้อสอบถามหัวใจ แต่กล้ามเนื้อขาใช้หลักเดียวกัน'
-      ],
-      say: 'The exam asked about the heart. Same logic in the leg: no oxygen, little ATP.' },
-
-    { id: 'f7', kind: 'trace', sec: BONUS, bonus: true, tag: 'Trace it', title: 'Trace each finding back to the block',
-      traces: [
-        { k: 'pulse', t: 'Absent pulse', path: ['occl', 'flow', 'pulse'], note: 'มาจาก flow ลดลงโดยตรง' },
-        { k: 'pale', t: 'Pale', path: ['occl', 'flow', 'skin'], note: 'มาจาก flow ลดลงโดยตรง' },
-        { k: 'cold', t: 'Cold', path: ['occl', 'flow', 'skin'], note: 'มาจาก flow ลดลงโดยตรง' },
-        { k: 'numb', t: 'Numbness, tingling', path: ['occl', 'flow', 'hypox', 'atp', 'nerve', 'sens'], note: '&#8595;ATP &#8594; abnormal depolarization' },
-        { k: 'pain', t: 'Severe pain', path: ['occl', 'flow', 'hypox', 'atp', 'nerve', 'pain'], note: 'hypoxia &#8594; nerve damage' },
-        { k: 'weak', t: 'Cannot move toes', path: ['occl', 'flow', 'hypox', 'atp', 'nerve', 'muscle', 'para'], note: 'มาจากทั้ง nerve damage และ abnormal crossbridge' }
-      ],
-      say: 'Short on time? Tap only Absent pulse, Numbness and Cannot move toes.' },
-
-    { id: 'qjvp', kind: 'poll', sec: BONUS, bonus: true, tag: 'Past exam', src: 'AC80',
+    { id: 'qjvp', kind: 'poll', sec: 2, t: 25, tag: 'Past exam', src: 'AC80',
       q: 'A patient has been diagnosed with atrial fibrillation. Which wave on the jugular venous pulse waveform should be <b>absent</b>?',
       o: ['a', 'c', 'x', 'v', 'y'], a: 0,
       figHtml: '<div class="jvpcompare">' +
@@ -214,7 +130,58 @@ window.ALI = (function () {
       ],
       say: 'First to skip if you are behind. Point at the a wave on the normal trace, then cover it: that is AF. Same reason the clot forms: the atrium no longer squeezes.' },
 
-    { id: 'l1', kind: 'poll', sec: BONUS, bonus: true, tag: 'Past exam', src: 'AC80',
+    { id: 'f2', kind: 'flowtap', sec: 3, t: 30, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow'], reveals: ['pulse', 'hypox', 'skin'],
+      q: 'Less flow <b>alone</b> explains which <b>3</b> findings, before any cell runs out of energy?',
+      chips: [{ t: 'Absent pulse', ok: 1 }, { t: 'Numbness' }, { t: 'Pale skin', ok: 1 }, { t: 'Cold skin', ok: 1 }, { t: 'Pain' }, { t: 'Cannot move toes' }],
+      why: [
+        '<b>Pulse</b>: คลื่นความดันจาก stroke volume ผ่านจุดตันไม่ได้',
+        '<b>Pale</b>: เลือดเข้าผิวหนังน้อยลง สีผิวจึงซีด',
+        '<b>Cold</b>: เนื้อเยื่อนำความร้อนไม่ดี ต้องอาศัยเลือดพาความร้อน',
+        'ชา ปวด อ่อนแรง ต้องผ่าน <b>tissue hypoxia</b> ก่อน <span class="src">Lab direction: Microcirculation 1.2&#8211;1.3</span>'
+      ],
+      say: 'Blocked artery, less flow. Three of the six come straight from that. The other three need the middle box.' },
+
+    { id: 'f3', kind: 'flowpoll', sec: 3, t: 30, tag: 'Past exam in the flowchart', src: 'AC80', known: ['occl', 'flow', 'pulse', 'hypox', 'skin'], reveals: ['atp'],
+      q: 'A patient experiences chest pain due to cardiac ischemia. What happens in anaerobic respiration of cardiac muscle?',
+      o: ['Lactic acid from glycolysis', 'Fatty acid oxidation', 'Pyruvate accumulation in mitochondria', 'Use ketone body as main energy source'], a: 0,
+      why: [
+        'ไม่มี O<sub>2</sub> &#8594; oxidative phosphorylation หยุด &#8594; เหลือ <b>glycolysis</b> &#8594; pyruvate &#8594; <b>lactate</b>',
+        'ได้ ATP น้อยมาก hypoxia จึงนำไปสู่ <b>&#8595;ATP</b>',
+        'ข้อสอบถามหัวใจ แต่กล้ามเนื้อขาใช้หลักเดียวกัน'
+      ],
+      say: 'The exam asked about the heart. Same logic in the leg: no oxygen, little ATP.' },
+
+    { id: 'f5', kind: 'flowpoll', sec: 3, t: 30, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow', 'pulse', 'hypox', 'skin', 'atp'], reveals: ['nerve', 'sens', 'pain'],
+      q: 'Which <b>ATP-dependent</b> protein keeps a nerve&#8217;s resting membrane potential?',
+      o: ['SERCA', 'Funny channel', 'Na<sup>+</sup>/K<sup>+</sup>-ATPase', 'Nicotinic ACh receptor'], a: 2,
+      why: [
+        'ATP หมด &#8594; pump หยุด &#8594; RMP ไม่ลบเท่าเดิม = <b>abnormal depolarization</b>',
+        'ช่วงแรก nerve ยิงผิดปกติ (<b>tingling</b>) นานขึ้น Na<sup>+</sup> channel inactivate (<b>numbness</b>)',
+        'Nerve damage ทำให้เกิด <b>pain</b> ด้วย'
+      ],
+      say: 'Pump stops, membrane depolarizes: tingling first, then numbness.' },
+
+    { id: 'f6', kind: 'flowpoll', sec: 3, t: 25, tag: 'Build the flowchart', src: 'Case', known: ['occl', 'flow', 'pulse', 'hypox', 'skin', 'atp', 'nerve', 'sens', 'pain'], reveals: ['muscle', 'para'],
+      q: 'Why can&#8217;t muscle contract normally without ATP?',
+      o: ['Troponin C is destroyed', 'Actin filaments dissolve', 'ACh blocks the motor end plate', 'Crossbridge cycling fails: myosin needs ATP to release actin'], a: 3,
+      why: [
+        'ATP ทำให้ myosin หลุดจาก actin ไม่มี ATP จึงเกิด <b>abnormal crossbridge</b>',
+        'Paralysis จึงมาได้ <b>2 ทาง</b>: nerve damage + muscle damage'
+      ],
+      say: 'The last box has two arrows into it: weakness comes from both nerve and muscle.' },
+
+    { id: 'f7', kind: 'trace', sec: 3, t: 30, tag: 'Trace it', title: 'Trace each finding back to the block',
+      traces: [
+        { k: 'pulse', t: 'Absent pulse', path: ['occl', 'flow', 'pulse'], line: 'Occlusion &#8594; less flow &#8594; absence of pulse', note: 'มาจาก flow ลดลงโดยตรง' },
+        { k: 'pale', t: 'Pale', path: ['occl', 'flow', 'skin'], line: 'Occlusion &#8594; less flow &#8594; cold and pale skin', note: 'มาจาก flow ลดลงโดยตรง' },
+        { k: 'cold', t: 'Cold', path: ['occl', 'flow', 'skin'], line: 'Occlusion &#8594; less flow &#8594; cold and pale skin', note: 'มาจาก flow ลดลงโดยตรง' },
+        { k: 'numb', t: 'Numbness, tingling', path: ['occl', 'flow', 'hypox', 'atp', 'nerve', 'sens'], line: 'Occlusion &#8594; less flow &#8594; hypoxia &#8594; &#8595;ATP &#8594; nerve damage &#8594; abnormal sensation', note: '&#8595;ATP &#8594; abnormal depolarization' },
+        { k: 'pain', t: 'Severe pain', path: ['occl', 'flow', 'hypox', 'atp', 'nerve', 'pain'], line: 'Occlusion &#8594; less flow &#8594; hypoxia &#8594; &#8595;ATP &#8594; nerve damage &#8594; pain', note: 'hypoxia &#8594; nerve damage' },
+        { k: 'weak', t: 'Cannot move toes', path: ['occl', 'flow', 'hypox', 'atp', 'nerve', 'muscle', 'para'], line: 'Occlusion &#8594; less flow &#8594; hypoxia &#8594; &#8595;ATP &#8594; nerve damage + muscle damage &#8594; paralysis', note: 'มาจากทั้ง nerve damage และ abnormal crossbridge' }
+      ],
+      say: 'Short on time? Tap only Absent pulse, Numbness and Cannot move toes.' },
+
+    { id: 'l1', kind: 'poll', sec: 4, t: 25, tag: 'Past exam', src: 'AC80',
       q: 'A cuff with a pressure of <b>200 mmHg</b> is applied on a patient&#8217;s arm for 5 minutes. Which of the following should <b>not</b> be found?',
       o: ['Pain', 'Edema', 'Cold', 'Lack of pulse', 'Pallor'], a: 1,
       why: [
@@ -223,6 +190,39 @@ window.ALI = (function () {
         'เคสนี้ก็ไม่มี swelling ในประวัติ อาการตรงกับแขนในแลป'
       ],
       say: 'You felt this patient&#8217;s leg on your own arm in the lab: minutes there, three hours here.' },
+
+    { id: 'end', kind: 'concept', sec: 5, t: 20, tag: 'Take-home', title: 'Three things to keep',
+      html: '<ol class="takehome">' +
+        '<li><b>Source</b>: AF &#8594; stasis in the <b>left atrial appendage</b> &#8594; embolus &#8594; <b>femoral artery</b>.</li>' +
+        '<li><b>Mechanism</b>: <b>less flow</b> directly gives no pulse, cold and pale skin. <b>Hypoxia and &#8595;ATP</b> damage nerve and muscle, giving abnormal sensation, pain and paralysis.</li>' +
+        '<li><b>Lab link</b>: same as a 200 mmHg cuff, so <b>no edema</b>. Acute means no time for <b>collaterals</b>.</li>' +
+        '</ol>',
+      say: 'Three lines, then the reference slide.' },
+
+    { id: 'refs', kind: 'end', sec: 6, t: 5, tag: 'APA 7', title: 'References',
+      html: '<ul class="reflist">' +
+        '<li>จุไรพร สมบุญวงค์. (ม.ป.ป.). <i>ปฏิบัติการสรีรวิทยา 16: ระบบไหลเวียนเลือดขนาดเล็ก</i> [เอกสารปฏิบัติการ]. ภาควิชาสรีรวิทยา คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย.</li>' +
+        '<li>วสันต์ อุทัยเฉลิม และ วีรภัทร โฆษิตานุฤทธิ์. (ม.ป.ป.). <i>ปฏิบัติการสรีรวิทยา: คลื่นไฟฟ้าหัวใจ</i> [เอกสารปฏิบัติการ]. ภาควิชาสรีรวิทยา คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย.</li>' +
+        '<li><i>AC 75&#8211;79 CVS</i> [Unpublished MCQ recall file]. (n.d.).</li>' +
+        '<li><i>AC 80: Cardiovascular System 1</i> [Unpublished MCQ recall file]. (n.d.).</li>' +
+        '<li>Akimoto, T., Ogawa, K., Hara, M., Ninomiya, S., Ishihara, M., Morita, A., Kamei, S., &amp; Nakajima, H. (2023). Clinical features of acute ischemic stroke patients with hypoesthesia as an initial symptom. <i>Neurology International, 15</i>(1), 508&#8211;517. <a href="https://doi.org/10.3390/neurolint15010030">https://doi.org/10.3390/neurolint15010030</a></li>' +
+        '<li>Blackshear, J. L., &amp; Odell, J. A. (1996). Appendage obliteration to reduce stroke in cardiac surgical patients with atrial fibrillation [Abstract]. <i>The Annals of Thoracic Surgery, 61</i>(2), 755&#8211;759. <a href="https://doi.org/10.1016/0003-4975(95)00887-X">https://doi.org/10.1016/0003-4975(95)00887-X</a></li>' +
+        '<li>Costa, D., Ielapi, N., Perri, P., Minici, R., Faga, T., Michael, A., Bracale, U. M., Andreucci, M., &amp; Serra, R. (2024). Molecular insight into acute limb ischemia. <i>Biomolecules, 14</i>(7), Article 838. <a href="https://doi.org/10.3390/biom14070838">https://doi.org/10.3390/biom14070838</a></li>' +
+        '<li>Hall, J. E., &amp; Hall, M. E. (2021). <i>Guyton and Hall textbook of medical physiology</i> (14th ed.). Elsevier.</li>' +
+        '<li>Kositanurit, W. (n.d.). <i>Lab heart contraction and extrasystole</i> [Lab slides]. Department of Physiology, Faculty of Medicine, Chulalongkorn University.</li>' +
+        '<li>Mogyoros, I., Bostock, H., &amp; Burke, D. (2000). Mechanisms of paresthesias arising from healthy axons [Abstract]. <i>Muscle &amp; Nerve, 23</i>(3), 310&#8211;320. <a href="https://doi.org/10.1002/(SICI)1097-4598(200003)23:3%3C310::AID-MUS2%3E3.0.CO;2-A">https://doi.org/10.1002/(SICI)1097-4598(200003)23:3&lt;310::AID-MUS2&gt;3.0.CO;2-A</a></li>' +
+        '<li>Obara, H., Matsubara, K., &amp; Kitagawa, Y. (2018). Acute limb ischemia. <i>Annals of Vascular Diseases, 11</i>(4), 443&#8211;448. <a href="https://doi.org/10.3400/avd.ra.18-00074">https://doi.org/10.3400/avd.ra.18-00074</a></li>' +
+        '<li>Olinic, D.-M., Stanek, A., T&#259;taru, D.-A., Homorodean, C., &amp; Olinic, M. (2019). Acute limb ischemia: An update on diagnosis and management. <i>Journal of Clinical Medicine, 8</i>(8), Article 1215. <a href="https://doi.org/10.3390/jcm8081215">https://doi.org/10.3390/jcm8081215</a></li>' +
+        '<li>Peer Support 81. (n.d.). <i>tAChycardia 81: 3050116 Cardiovascular System I</i> [Unpublished MCQ recall file].</li>' +
+        '<li>Shukuzawa, K., Ozawa, H., &amp; Ohki, T. (2026). Revascularization for acute limb ischemia. <i>Annals of Vascular Diseases, 19</i>(1), Article 26-00066. <a href="https://doi.org/10.3400/avd.ra.26-00066">https://doi.org/10.3400/avd.ra.26-00066</a></li>' +
+        '<li>Simon, F., Oberhuber, A., Floros, N., Busch, A., Wagenh&#228;user, M. U., Schelzig, H., &amp; Duran, M. (2018). Acute limb ischemia&#8212;Much more than just a lack of oxygen. <i>International Journal of Molecular Sciences, 19</i>(2), Article 374. <a href="https://doi.org/10.3390/ijms19020374">https://doi.org/10.3390/ijms19020374</a></li>' +
+        '<li>Stanford Medicine. (n.d.). <i>JVP waveform</i> [Image]. Wikimedia Commons. <a href="https://commons.wikimedia.org/wiki/File:JVP_waveform.png">https://commons.wikimedia.org/wiki/File:JVP_waveform.png</a></li>' +
+        '<li>Stanford Medicine 25. (n.d.). <i>Neck vein exam: JVP measurement</i>. Stanford Medicine. <a href="https://stanfordmedicine25.stanford.edu/the25/neck-exam-jugular-venous-pressure-measurement.html">https://stanfordmedicine25.stanford.edu/the25/neck-exam-jugular-venous-pressure-measurement.html</a></li>' +
+        '<li>Sulague, R. M., Whitham, T., Danganan, L. M. L., Effiom, V., Candelario, K., Latif, N., &amp; Hameed, I. (2023). The left atrial appendage and atrial fibrillation&#8212;A contemporary review. <i>Journal of Clinical Medicine, 12</i>(21), Article 6909. <a href="https://doi.org/10.3390/jcm12216909">https://doi.org/10.3390/jcm12216909</a></li>' +
+        '</ul>',
+      say: 'Five seconds: sources are in APA format, links work in the PDF. Tell them More practice stays on their phones.' },
+
+    /* ========== MORE PRACTICE: after the talk, on their own ========== */
 
     { id: 'q1', kind: 'poll', sec: BONUS, bonus: true, tag: 'Case question', src: 'Case',
       q: 'Before any imaging: which problem best fits this <b>pale, cold, pulseless</b> leg?',

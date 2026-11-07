@@ -152,9 +152,6 @@ h2 .hl { color: var(--art); }
 .rev .opt.sel:not(.isans) .L { border-color: var(--bad); color: var(--bad); }
 .rev .opt.sel:not(.isans) .mk::after { content: "\2717"; color: var(--bad); }
 .rev .opt:not(.isans):not(.sel) { opacity: .55; }
-/* Once answered, only the right answer and the viewer's pick stay, so the explanation fits. Live vote bars keep every option. */
-.rev .opts:not(:has(.pct)) li:not(:has(.isans)):not(:has(.sel)) { display: none; }
-.pollcard:not(.tapcard) .explain .ans { display: none; }
 .explain, .fc { scroll-margin-top: 80px; }
 .explain { background: var(--ok-soft); border-radius: 12px; padding: .65em .95em; font-size: .94em; }
 .explain:not(.on) { display: none; }
@@ -257,22 +254,24 @@ kbd { font: .84em var(--f-mono); border: 1px solid var(--rule); border-bottom-wi
 .score { display: flex; flex-wrap: wrap; gap: .7em 1.2em; align-items: center; background: var(--sheet2); border-radius: 10px; padding: .55em .9em; }
 .score b { font: 700 1.5em var(--f-display); color: var(--art); }
 
-/* ---------- citations, search method, references ---------- */
-.cite { font: 600 .66em/0 var(--f-mono); color: var(--ven); vertical-align: super; margin-left: .12em; white-space: nowrap; }
+/* ---------- search method, references ---------- */
 .scan figcaption .src { white-space: normal; }
-.tbl.method { font-size: .82em; }
-.tbl.method td { line-height: 1.32; padding: .3em .55em; }
-.tbl.method td:first-child { font-weight: 500; }
-.searches { list-style: none; margin: 0; padding: 0; display: grid; gap: .12em; font-size: .76em; }
-.searches b { font-family: var(--f-mono); color: var(--art); margin-right: .25em; }
-.searches code { font-family: var(--f-mono); font-size: .94em; overflow-wrap: anywhere; }
-.cbody > .note { font-size: .78em; line-height: 1.38; padding: .4em .75em; }
-.reflist { margin: 0; padding-left: 1.7em; display: grid; gap: .16em; font-size: .7em; line-height: 1.3; }
+.tbl.method td { line-height: 1.35; }
+.tbl.method td:first-child { font-weight: 500; white-space: nowrap; }
+.searchbox { background: var(--sheet2); border-radius: 10px; padding: .55em .85em; display: grid; gap: .3em; font-size: .86em; }
+.searchbox b { font-family: var(--f-display); font-weight: 600; }
+.searchbox p { margin: 0; color: var(--ink2); }
+.searches { list-style: none; margin: 0; padding: 0; display: grid; gap: .1em; }
+.searches code { font-family: var(--f-mono); font-size: .88em; overflow-wrap: anywhere; }
+.reflist { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 1.6em; font-size: .62em; line-height: 1.3; }
+.reflist li { break-inside: avoid; padding-left: 1.5em; text-indent: -1.5em; margin-bottom: .34em; }
 .reflist a { color: var(--ven); overflow-wrap: anywhere; }
 .presenter { display: flex; flex-wrap: wrap; gap: .3em 1.2em; margin: 0 0 1em; font-size: .9em; color: var(--ink2); }
 .presenter b { color: var(--ink); font-weight: 600; }
 .presenter b:empty { display: inline-block; min-width: 8em; border-bottom: 1px solid var(--ink2); }
 .presenter b.short:empty { min-width: 3em; }
+.tracelist { list-style: none; margin: 0; padding: 0; display: grid; gap: .55em; font-size: .9em; line-height: 1.32; }
+.tracelist b { display: block; color: var(--art); font-family: var(--f-display); font-weight: 600; }
 
 /* ---------- static hand-in version (?pdf=1): nothing to press, every answer open ---------- */
 body.pdf *, body.pdf *::before, body.pdf *::after { animation: none !important; transition: none !important; }
@@ -347,4 +346,6 @@ body.following #prev, body.following #next, body.following #reveal { display: no
   .fc { font-size: .78em; column-gap: .3em; }
   .fc.large { font-size: .82em; }
   .keys { display: none; }
+  .reflist { columns: 1; font-size: .78em; }
+  .tbl.method td:first-child { white-space: normal; }
 }
