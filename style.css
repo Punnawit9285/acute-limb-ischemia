@@ -152,6 +152,9 @@ h2 .hl { color: var(--art); }
 .rev .opt.sel:not(.isans) .L { border-color: var(--bad); color: var(--bad); }
 .rev .opt.sel:not(.isans) .mk::after { content: "\2717"; color: var(--bad); }
 .rev .opt:not(.isans):not(.sel) { opacity: .55; }
+/* Once answered, only the right answer and the viewer's pick stay, so the explanation fits. Live vote bars keep every option. */
+.rev .opts:not(:has(.pct)) li:not(:has(.isans)):not(:has(.sel)) { display: none; }
+.pollcard:not(.tapcard) .explain .ans { display: none; }
 .explain, .fc { scroll-margin-top: 80px; }
 .explain { background: var(--ok-soft); border-radius: 12px; padding: .65em .95em; font-size: .94em; }
 .explain:not(.on) { display: none; }
@@ -253,6 +256,33 @@ kbd { font: .84em var(--f-mono); border: 1px solid var(--rule); border-bottom-wi
 .keys { color: var(--ink2); font-size: .8em; margin-top: .8em; }
 .score { display: flex; flex-wrap: wrap; gap: .7em 1.2em; align-items: center; background: var(--sheet2); border-radius: 10px; padding: .55em .9em; }
 .score b { font: 700 1.5em var(--f-display); color: var(--art); }
+
+/* ---------- citations, search method, references ---------- */
+.cite { font: 600 .66em/0 var(--f-mono); color: var(--ven); vertical-align: super; margin-left: .12em; white-space: nowrap; }
+.scan figcaption .src { white-space: normal; }
+.tbl.method { font-size: .82em; }
+.tbl.method td { line-height: 1.32; padding: .3em .55em; }
+.tbl.method td:first-child { font-weight: 500; }
+.searches { list-style: none; margin: 0; padding: 0; display: grid; gap: .12em; font-size: .76em; }
+.searches b { font-family: var(--f-mono); color: var(--art); margin-right: .25em; }
+.searches code { font-family: var(--f-mono); font-size: .94em; overflow-wrap: anywhere; }
+.cbody > .note { font-size: .78em; line-height: 1.38; padding: .4em .75em; }
+.reflist { margin: 0; padding-left: 1.7em; display: grid; gap: .16em; font-size: .7em; line-height: 1.3; }
+.reflist a { color: var(--ven); overflow-wrap: anywhere; }
+.presenter { display: flex; flex-wrap: wrap; gap: .3em 1.2em; margin: 0 0 1em; font-size: .9em; color: var(--ink2); }
+.presenter b { color: var(--ink); font-weight: 600; }
+.presenter b:empty { display: inline-block; min-width: 8em; border-bottom: 1px solid var(--ink2); }
+.presenter b.short:empty { min-width: 3em; }
+
+/* ---------- static hand-in version (?pdf=1): nothing to press, every answer open ---------- */
+body.pdf *, body.pdf *::before, body.pdf *::after { animation: none !important; transition: none !important; }
+body.pdf .ctrls, body.pdf .tabs, body.pdf #prev, body.pdf #next, body.pdf #reveal, body.pdf .keys, body.pdf .howto, body.pdf .score, body.pdf .rail .hint { display: none !important; }
+body.pdf .pager { grid-template-columns: minmax(0, 1fr); }
+body.pdf .ekg-base { opacity: 1; }
+body.pdf .ekg-pulse { display: none; }
+body.pdf #stage { overflow: hidden; }
+body.pdf .bigqr .scan-t::after { content: " (live version)"; }
+body.pdf .bar { grid-template-columns: auto minmax(0, 1fr); }
 
 /* ---------- overlays ---------- */
 .overlay { position: fixed; inset: 0; z-index: 60; background: rgba(6, 8, 12, .9); display: grid; place-items: center; padding: 16px; cursor: zoom-out; }

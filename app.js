@@ -4,6 +4,8 @@
   'use strict';
   var A = window.ALI, S = A.slides, FLOW = A.flow;
   var TUTOR = window.ALI_MODE === 'tutor';
+  /* ?pdf=1 is the static hand-in version used by tools/build-pdf.js: light theme, every answer open, no controls. */
+  var PDF = /[?&]pdf=1/.test(location.search);
   var BASE = window.ALI_BASE;
   var LET = 'ABCDEFGH';
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -115,11 +117,16 @@
   }
 
   /* ---------- slide renderers ---------- */
+  function presenterHtml() {
+    var P = window.ALI_PRESENTER || {};
+    if (!P.name && !P.id && !P.group && !PDF) return '';
+    return '<p class="presenter"><span>ชื่อ&#8211;นามสกุล <b>' + (P.name || '') + '</b></span><span>เลขประจำตัวนิสิต <b>' + (P.id || '') + '</b></span><span>กลุ่ม <b class="short">' + (P.group || '') + '</b></span></p>';
+  }
   function renderTitle() {
     return '<article class="card"><div class="title"><div>' +
-      '<div class="kick">Case 4 &#183; Pathophysiology of common cardiovascular diseases</div>' +
+      '<div class="kick">CVS I &#183; Case 4 &#183; Case presentation</div>' +
       '<h1>Acute limb ischemia</h1>' +
-      '<p class="lede">อ่านเคส หา symptoms and signs แล้วต่อ flowchart กลไกด้วยกันทีละกล่อง</p>' +
+      '<p class="lede">อ่านเคส หา symptoms and signs แล้วต่อ flowchart กลไกด้วยกันทีละกล่อง</p>' + presenterHtml() +
       '<ol class="howto"><li>สแกน QR ของหน้าไหนก็ได้ มือถือจะเปิดหน้านั้นทันที</li>' +
       '<li>แตะคำตอบ <b>เฉลยขึ้นทันที</b></li></ol>' +
       '<p class="keys"><kbd>Space</kbd> reveal next &#183; <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> move &#183; <kbd>A</kbd>&#8211;<kbd>E</kbd> choose &#183; <kbd>Q</kbd> big QR &#183; <kbd>R</kbd> reset page &#183; <kbd>F</kbd> full screen</p>' +
@@ -190,7 +197,7 @@
   function saveRev() { if (!TUTOR) LS.set('rev', rev); }
   function curRev() { var id = S[idx].id; return rev[id] || (rev[id] = []); }
   function sync(fresh) {
-    var s = S[idx], card = $('#stage .card'), steps = stepsOf(), r = TUTOR && s.kind !== 'trace' ? steps.map(function (_, i) { return i; }) : curRev();
+    var s = S[idx], card = $('#stage .card'), steps = stepsOf(), r = (TUTOR || PDF) && s.kind !== 'trace' ? steps.map(function (_, i) { return i; }) : curRev();
     steps.forEach(function (el, i) { el.classList.toggle('on', r.indexOf(i) >= 0); });
     var ex = $('.explain', card), revealed = ex ? ex.classList.contains('on') : false;
     card.classList.toggle('rev', revealed);
@@ -282,8 +289,12 @@
     $('#stage').scrollTop = 0;
     renderRail(s.id);
     $$('.tab').forEach(function (t, i) { t.setAttribute('aria-current', i === s.sec ? 'true' : 'false'); });
+    /* Numbering follows the course rule: the cover and the references are not counted as slides. */
     var inBonus = idx >= FIRST_BONUS, first = inBonus ? FIRST_BONUS : 0, count = inBonus ? S.length - FIRST_BONUS : FIRST_BONUS;
-    $('#pos').innerHTML = (s.sec >= 0 ? A.sections[s.sec].name + ' &#183; ' : '') + '<span>' + (idx - first + 1) + '</span> / ' + count;
+    var uncounted = !inBonus && (s.kind === 'title' || s.kind === 'end');
+    var label = s.kind === 'title' ? 'Cover' : (s.sec >= 0 ? A.sections[s.sec].name : '');
+    if (!uncounted) label += ' &#183; <span>' + (inBonus ? idx - first + 1 : idx) + '</span> / ' + (inBonus ? count : FIRST_BONUS - 2);
+    $('#pos').innerHTML = label;
     $('#progBar').style.width = (count > 1 ? 100 * (idx - first) / (count - 1) : 100) + '%';
     if (TUTOR) { var by = finishBy(idx); $('#say').innerHTML = (by ? '<span class="tm">by ' + by + '</span> ' : '') + (s.say || ''); }
     try { history.replaceState(null, '', '#' + s.id); } catch (e) { }
@@ -427,6 +438,7 @@
   $('#tabs').innerHTML = A.sections.map(function (s, i) { return '<button type="button" class="tab" data-sec="' + i + '"><span class="k">' + s.k + '</span>' + s.name + '</button>'; }).join('');
   var th = LS.get('theme', null);
   if (th === 'dark' || th === 'light') document.documentElement.setAttribute('data-theme', th);
+  if (PDF) { document.documentElement.setAttribute('data-theme', 'light'); document.body.classList.add('pdf'); }
 
   window.Deck = {
     on: function (ev, f) { (listeners[ev] = listeners[ev] || []).push(f); },
